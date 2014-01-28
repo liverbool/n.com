@@ -485,7 +485,7 @@ class Route {
 		// passes and then we will know if the route as a whole matches request.
 		return static::$validators = array(
 			new MethodValidator, new SchemeValidator,
-			new HostValidator, new UriValidator,
+			new HostValidator, new \Lib\Kakkak\Routing\UriValidator(),
 		);
 	}
 

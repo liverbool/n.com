@@ -11,11 +11,11 @@
           @endif
 
           @if ($data->getGenre())
-            <span>{{{ $data->getGenre() }}}</span> - 
+            <span>{{ $data->getGenre() }}</span> -
           @endif
 
            @if ($data->getReleasedate())
-            <span>{{{ $data->getReleasedate() }}}</span>
+            <span>{{ $data->getReleasedate() }}</span>
           @endif
           
         </div>

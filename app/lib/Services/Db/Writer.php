@@ -630,7 +630,10 @@ class Writer
                 {
                      $titles[$k]['poster'] = "imdb/posters/{$v['imdb_id']}" . '.jpg';
                 }        	
-            }                  
+            }
+
+            // BOON: Fixed, source of imdb_rating is '00.99/10', cast to 0.99
+            $titles[$k]['imdb_rating'] = (float) $titles[$k]['imdb_rating'];
         }
 
         return $titles;

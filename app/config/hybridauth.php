@@ -10,12 +10,12 @@ return array(
 			),
 		"Facebook"   => array (
 			"enabled"    => true,
-			"keys"       => array ( "id" => "**************", "secret" => "**************" ),
+			"keys"       => array ( "id" => "184864731723977", "secret" => "ef8fb5ab42c859dcd7a76e287da1d177" ),
 			'scope'      =>  'email',
 			),
 		"Twitter"    => array (
 			"enabled"    => true,
-			"keys"       => array ( "key" => "**************", "secret" => "**************" )
+			"keys"       => array ( "key" => "2WWttH0EO5U4Sx1Gz0FuAw", "secret" => "JkXgCAw6iNqvOoRzpVlGWhwRJ5DpWeY9qzYeXfcUM" )
 			)
 	),
 );

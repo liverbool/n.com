@@ -631,6 +631,8 @@ return array(
     'Lib\\Services\\Validation\\SeasonValidator' => $baseDir . '/app/lib/Services/Validation/SeasonValidator.php',
     'Lib\\Services\\Validation\\TitleValidator' => $baseDir . '/app/lib/Services/Validation/TitleValidator.php',
     'Lib\\Services\\Validation\\UserValidator' => $baseDir . '/app/lib/Services/Validation/UserValidator.php',
+    'Lib\\Kakkak\\Utils\\Str' => $baseDir . '/app/lib/Kakkak/Utils/Str.php',
+    'Lib\\Kakkak\\Routing\\UriValidator' => $baseDir . '/app/lib/Kakkak/Routing/UriValidator.php',
     'ListsController' => $baseDir . '/app/controllers/ListsController.php',
     'Math_BigInteger' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Math/BigInteger.php',
     'MigrationCartalystSentryInstallGroups' => $vendorDir . '/cartalyst/sentry/src/migrations/2012_12_06_225929_migration_cartalyst_sentry_install_groups.php',

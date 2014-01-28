@@ -26,7 +26,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost',
+	'url' => 'http://nangkakkak.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -194,7 +194,8 @@ return array(
 		'Schema'          => 'Illuminate\Support\Facades\Schema',
 		'Seeder'          => 'Illuminate\Database\Seeder',
 		'Session'         => 'Illuminate\Support\Facades\Session',
-		'Str'             => 'Illuminate\Support\Str',
+		//'Str'             => 'Illuminate\Support\Str',
+		'Str'             => 'Lib\Kakkak\Utils\Str',
 		'URL'             => 'Illuminate\Support\Facades\URL',
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
