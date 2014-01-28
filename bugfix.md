@@ -1,4 +1,4 @@
-Fix bug Kakkak!
+Fix bugs Kakkak!
 --------------
 
 ### 1. Add new class map
