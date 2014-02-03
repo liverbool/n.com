@@ -11,7 +11,7 @@
           <div class="img-container">
             
             <a href="{{ Helpers::url($v->title, $v->id, $v->type) }}">
-              <img src="{{{ $v->poster ? asset($v->poster) : asset('assets/images/imdbnoimage.jpg') }}}" class="img-responsive" alt="{{ 'Picture of ' . $v->title }}">
+              <img src="{{{ $v->poster ? asset($v->poster) : asset('assets/images/nangkakkak.com-empty.png') }}}" class="img-responsive" alt="{{ 'Picture of ' . $v->title }}">
             </a>         
             
             <figcaption>

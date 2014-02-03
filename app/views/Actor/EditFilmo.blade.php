@@ -16,7 +16,7 @@
 
     	<h3 class="heading">{{ trans('main.editing filmo', array('name' => $actor['name'])) }} <i class="fa fa-pencil"></i></h3 class="heading">
 
-    	<a href="{{ Helpers::url($actor['name'], $actor['id'], 'people') }}" class="btn btn-success mar-bot"><i class="fa fa-arrow-left"></i> Back</a>
+    	<a href="{{ Helpers::url($actor['name'], $actor['id'], 'people') }}" class="btn btn-success"><i class="fa fa-arrow-left"></i> Back</a>
 
     	<div class="row"> @include('Partials.Response') </div>
  			

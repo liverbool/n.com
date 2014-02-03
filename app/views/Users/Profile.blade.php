@@ -27,7 +27,7 @@
 					<figure class="col-sm-3 col-lg-2 col-xs-6" data-filter-class='{{ Helpers::genreFilter($w['genre']) }}' data-popularity="{{{ $w['imdb_votes_num'] }}}" data-name="{{{ $w['title'] }}}" data-release="{{{ $w['year'] }}}">
 				    	<div class="img-container">
 				    		<a href="{{Helpers::url($w['title'], $w['id'], $w['type'])}}">
-				    			<img class ="img-responsive" src="{{{ $w['poster'] ? asset($w['poster']) : asset('assets/images/imdbnoimage.jpg') }}}" alt="{{{ $w['title'] }}}">
+				    			<img class ="img-responsive" src="{{{ $w['poster'] ? asset($w['poster']) : asset('assets/images/nangkakkak.com-empty.png') }}}" alt="{{{ $w['title'] }}}">
 							</a>
 
 					  	  <figcaption title="{{{ $w['title'] }}}" >
@@ -56,7 +56,6 @@
 			@endif
 				
 		</div>
-	<div class="push"></div>
 	</div>
 
 @stop

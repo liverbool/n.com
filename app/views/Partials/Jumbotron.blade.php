@@ -1,75 +1,58 @@
-<div class="jumbotron" style="background: url( {{{ asset('assets/images/' . $bg) }}} )">
-	<div class="transparent">
+<div class="jumbotron kk-fade-hide">
+	<div class="jumbotron-inside">
+        <div class="container transparent">
 
-		<div class="row">
-	    	<div class="col-sm-3"></div>
-	      	<div class="col-sm-6">	        
-				 {{ Form::open(array('url' => Str::slug(trans('main.search')), 'method' => 'GET')) }}
+            {{--slider begins--}}
+            @if ( ! $featured->isEmpty())
 
-	            	<div class="input-group">
+                <div class="row">
+                    <div class="col-xs-1 previous-col hidden-xs">
+                        <a href="#left" data-liquidslider-ref="slider-home"><span class="fa fa-chevron-left previous"></span></a>
+                    </div>
 
-	            		{{ Form::text('q', null, array('id' => 'auto-complete', 'class' => 'form-control search-bar', 'placeholder' => trans('main.search placeholder'), 'data-url' => url('typeahead'))) }}
-						              		
-                  		<span class="input-group-btn search-btn-ie-fix" title="GO!">
-                    		<button class="btn btn-default search-button home-search-btn" type="submit"><i class="fa fa-search"></i></button>
-                  		</span>
-		          	</div>	     
+                    <div class="col-sm-10 col-xs-12">
+                        <div class="liquid-slider" id="slider-home">
 
-		        {{ Form::close() }}		      
-			</div>
-	     	<div class="col-sm-3"></div>
-	    </div>
+                        {{--first slide--}}
+                        <div>
 
-		{{--slider begins--}}
-		@if ( ! $featured->isEmpty())
+                           @foreach($featured->slice(0, 4) as $k => $v)
 
-			<div class="row">
-				<div class="col-xs-1 previous-col hidden-xs">
-					<a href="#left" data-liquidslider-ref="slider-home"><span class="fa fa-chevron-left previous"></span></a>
-				</div>
-			   
-				<div class="col-sm-10 col-xs-12">
-					<div class="liquid-slider" id="slider-home">
+                             <figure class="col-sm-3 col-xs-6 home-trailer-poster" >
+                               <img src="{{$v->poster}}" class="img-responsive trailer-trigger" alt="{{{ $v->title . 'Poster' }}}" data-trailer="{{{ $v->trailer }}}">
+                               <div data-trailer="{{{ $v->trailer }}}" class="trailer-trigger overlay hidden-xs"><i class="fa fa-play"></i></div>
+                               <figcaption><a href="{{ Helpers::url($v->title, $v->id, $v->type) }}">{{{ $v->title }}}</a></figcaption>
+                             </figure>
 
-					{{--first slide--}}
-					<div>
+                           @endforeach
+                        </div>
 
-			           @foreach($featured->slice(0, 4) as $k => $v)
+                        {{--second slide--}}
+                        <div id="slide-2" class="hidden-xs" style="display:none">
 
-			             <figure class="col-sm-3 col-xs-6 home-trailer-poster" >
-			               <img src="{{$v->poster}}" class="img-responsive trailer-trigger" alt="{{{ $v->title . 'Poster' }}}" data-trailer="{{{ $v->trailer }}}">
-			               <div data-trailer="{{{ $v->trailer }}}" class="trailer-trigger overlay hidden-xs"><i class="fa fa-play"></i></div>
-			               <figcaption><a href="{{ Helpers::url($v->title, $v->id, $v->type) }}">{{{ $v->title }}}</a></figcaption>                     
-			             </figure> 
+                            @foreach($featured->slice(4, 8) as $k => $v)
 
-			           @endforeach             
-			 	    </div>
+                                <figure class="col-xs-3 home-trailer-poster">
+                                    <img src="{{$v->poster}}" class="img-responsive trailer-trigger" data-trailer="{{{ $v->trailer }}}" alt="{{{ $v->title . 'Poster' }}}">
+                                    <div class="overlay"><i class="fa fa-play"></i></div>
+                                    <figcaption><a href="{{ Helpers::url($v->title, $v->id, $v->type) }}">{{{ $v->title }}}</a></figcaption>
+                                </figure>
 
-			 	    {{--second slide--}}
-			 	    <div id="slide-2" class="hidden-xs" style="display:none">
+                            @endforeach
+                        </div>
 
-			        	@foreach($featured->slice(4, 8) as $k => $v)
-			
-							<figure class="col-xs-3 home-trailer-poster">
-								<img src="{{$v->poster}}" class="img-responsive trailer-trigger" data-trailer="{{{ $v->trailer }}}" alt="{{{ $v->title . 'Poster' }}}">
-								<div class="overlay"><i class="fa fa-play"></i></div>
-								<figcaption><a href="{{ Helpers::url($v->title, $v->id, $v->type) }}">{{{ $v->title }}}</a></figcaption>                     
-			             	</figure> 
+                        </div>{{--slider--}}
+                    </div>{{--col-xs-10--}}
 
-						@endforeach
-			 	    </div>
+                    <div class="col-xs-1 next-col hidden-xs">
+                        <a href="#right" data-liquidslider-ref="slider-home"><span class="fa fa-chevron-right next"></span></a>
+                    </div>
 
-			 		</div>{{--slider--}}
-				</div>{{--col-xs-10--}}
+                </div>{{--slider row--}}
 
-				<div class="col-xs-1 next-col hidden-xs">
-		        	<a href="#right" data-liquidslider-ref="slider-home"><span class="fa fa-chevron-right next"></span></a>
-		    	</div>
+            @endif
 
-			</div>{{--slider row--}}
-
-		@endif
-		
-	</div>{{--transparent--}}
+        </div>{{--transparent--}}
+	</div>{{--jumbotron-inside--}}
 </div>{{--jumbotron--}}
 

@@ -25,13 +25,13 @@
 
 <div class="row"> @include('Partials.Response') </div>
 
-<div class="lists-wrapper mar-bot">
+<div class="lists-wrapper">
 	<ul class="nav nav-pills nav-justified">
-	  <li class="{{ ! Request::segment(3) ? 'active' : '' }}"><a href="{{ Helpers::url($user->username, $user->id, 'users') }}">{{ trans('users.watchlist') }}</a></li>
-	  <li class="{{ Request::segment(3) == 'favorites' ? 'active' : '' }}"><a href="{{ Helpers::url($user->username, $user->id, 'users') . '/favorites' }}">{{ trans('users.favorites') }}</a></li>
-	  <li class="{{ Request::segment(3) == 'reviews' ? 'active' : '' }}"><a href="{{ Helpers::url($user->username, $user->id, 'users') .'/reviews' }}">{{ trans('users.reviews') }}</a></li>
+	  <li class="{{ ! Request::segment(3) ? 'active' : '' }}"><a href="{{ Helpers::profileUrl($user) }}">{{ trans('users.watchlist') }}</a></li>
+	  <li class="{{ Request::segment(3) == 'favorites' ? 'active' : '' }}"><a href="{{ Helpers::profileUrl($user) . '/favorites' }}">{{ trans('users.favorites') }}</a></li>
+	  <li class="{{ Request::segment(3) == 'reviews' ? 'active' : '' }}"><a href="{{ Helpers::profileUrl($user) .'/reviews' }}">{{ trans('users.reviews') }}</a></li>
 	  @if(Helpers::isUser($user->username))
-	  	<li class="{{ Request::segment(3) == 'settings' ? 'active' : '' }}"><a href="{{ Helpers::url($user->username, $user->id, 'users') . '/settings' }}">{{ trans('users.settings') }}</a></li>
+	  	<li class="{{ Request::segment(3) == 'settings' ? 'active' : '' }}"><a href="{{ Helpers::profileUrl($user) . '/settings' }}">{{ trans('users.settings') }}</a></li>
 	  @endif
 	</ul>
 </div>

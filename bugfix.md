@@ -38,3 +38,9 @@ Fix bugs Kakkak!
 
       $this->{'addResource'.ucfirst($m)}($name, $key, $controller, $options);
       ```
+
+### 5. Change lib/Helpers.php
+    - Add $slug = true to Helpers::url parameter to make choise to slug & trans or not
+      - Line: 407 add param $slug
+      - Line: 376 add $user = null to profileUrl param
+      - Line: 380 set Helpers::profileUrl to slug false

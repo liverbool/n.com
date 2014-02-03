@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 
 @section('htmltag')
-  <html>
+<html>
 @show
 
-  <head>
+<head>
 
     @section('title')
 
-      <title>{{ trans('main.meta title') }}</title>
+    <title>{{ trans('main.meta title') }}</title>
 
     @show
 
@@ -16,66 +16,94 @@
 
     @section('assets')
 
-      <link rel="shortcut icon" href="{{{ asset('assets/images/favicon.ico') }}}">
-      <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
-      <link href='http://fonts.googleapis.com/css?family=Ceviche+One' rel='stylesheet' type='text/css'>
-      <link href='http://fonts.googleapis.com/css?family=Cantora+One' rel='stylesheet' type='text/css'>
-      <link href='http://fonts.googleapis.com/css?family=Quando' rel='stylesheet' type='text/css'>
+    <link rel="shortcut icon" href="{{{ asset('assets/images/kakkak16-2.png') }}}">
 
-      {{ HTML::style('assets/css/styles.css') }}
-      {{ HTML::style('assets/css/' . $options->getColorScheme() . '.css') }}
-     
+    {{ HTML::style('assets/ionicons/css/ionicons.css') }}
+    {{ HTML::style('//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css') }}
+    {{ HTML::style('//nangkakkak.github.io/cdn.nangkakkak.com/bootflat/css/bootflat.css') }}
+    {{ HTML::style('//nangkakkak.github.io/cdn.nangkakkak.com/bootflat/css/bootflat-extensions.css') }}
+
+
+    <!--
+    {{ HTML::style('assets/css/bootstrap.css') }}
+    -->
+    {{ HTML::style('assets/css/style.css') }}
+    <!--
+    {{ HTML::style('assets/css/' . $options->getColorScheme() . '.css') }}
+    -->
+
     @show
+<style type="text/css">
+    .kk-fade-hide {
+        opacity: 0;
+    }
+    .kk-fade-show {
+        opacity: 1;
+        transition: opacity 1s ease-in-out;
+        -moz-transition: opacity 1s ease-in-out;
+        -webkit-transition: opacity 1s ease-in-out;
+    }
+</style>
+</head>
 
-  </head>
 
-  
-  @section('bodytag')
+@section('bodytag')
 
-    <body>
+<body>
 
-  @show
+@show
 
-  @section('nav')
+@section('nav')
 
-    @include('Partials.Navbar')
+@include('Partials.Navbar')
 
-  @show
+@show
 
-  @yield('content')
+@yield('content')
 
-  @section('ads')
+@section('ads')
 
-  @if($ad = $options->getFooterAd())
+@if($ad = $options->getFooterAd())
 
-    <div class="row ads-row">{{ $ad }}</div>
+<div class="row ads-row">{{ $ad }}</div>
 
-  @endif
+@endif
 
- 
 
-  @show
+@show
 
-  <footer style="border-color:{{$options->getColor('warning')}}">
-    <div class="col-sm-4"> {{ trans('main.copyright') }} &#169; <span class="brand">{{ trans('main.brand') }}</span>{{ Carbon\Carbon::now()->year }}</div>
+<footer>
+    <section class="col-sm-10 hidden-xs">
 
-    <section class="col-sm-6 hidden-xs">
-      <a href="{{ route('privacy') }}">{{ trans('main.privacy') }}</a> |
-      <a href="{{ route('tos') }}">{{ trans('main.tos') }}</a> |
-      <a href="{{ route('contact') }}">{{ trans('main.contact') }}</a>
+    <div class="copyright"> {{ trans('main.copyright') }} <a class="brand" href="{{ url() }}">{{ trans('main.brand') }}</a>{{ Carbon\Carbon::now()->year }}</div>
+
+    <div>
+        <a href="{{ url('privacy') }}">{{ trans('main.privacy') }}</a> |
+        <a href="{{ url('tos') }}">{{ trans('main.tos') }}</a> |
+        <a href="{{ url('contact') }}">{{ trans('main.contact') }}</a>
+    </div>
     </section>
-   <div class="col-sm-2 home-social hidden-xs hidden-sm">
-     
-     <div id="twitter" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-twitter'></i>"></div>
-     <div id="facebook" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-facebook'></i>"></div>
-     <div id="pinterest" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-pinterest'></i>"></div>
-     <div id="linkedin" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-linkedin'></i>"></div>
+    <div class="col-sm-2 home-social hidden-xs hidden-sm">
 
-   </div>
- </footer>
- {{ HTML::script('assets/js/scripts.js') }}
+        <div id="twitter" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-twitter'></i>"></div>
+        <div id="facebook" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-facebook'></i>"></div>
+        <div id="pinterest" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-pinterest'></i>"></div>
+        <div id="linkedin" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-linkedin'></i>"></div>
 
-  @yield('scripts')
+    </div>
+</footer>
+{{ HTML::script('assets/js/library.js') }}
+{{ HTML::script('//nangkakkak.github.io/cdn.nangkakkak.com/bootflat/js/jquery.icheck.js') }}
+{{ HTML::script('assets/js/script.min.js') }}
 
-  </body>
+@yield('scripts')
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/en_US/all.js#xfbml=1&appId=184864731723977";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+</body>
 </html>

@@ -1,7 +1,7 @@
 @extends('Main.Boilerplate')
 
 @section('htmltag')
-  <html id="register-page" class="nav-no-border" style="background: url( {{{ asset('assets/images/' . $bg) }}} )">
+  <html id="register-page" style="background: url( {{{ asset('assets/images/' . $bg) }}} )">
 @stop
 
 @section('title')
@@ -13,7 +13,7 @@
   <div class="container push-footer-wrapper">
     <div class="col-sm-2"></div>
 
-    <div class="col-sm-8">
+    <div class="col-sm-8 panel panel-default">
 
       <div class="row"> @include('Partials.Response') </div>
 
@@ -51,7 +51,7 @@
             {{ Form::password('password_confirmation', array('class' => 'form-control')) }}
           </div>
 
-          <button type="submit" class="btn btn-warning">{{ trans('users.create account') }}</button>
+          <button type="submit" class="btn btn-inverse">{{ trans('users.create account') }}</button>
 
         {{ Form::close() }}
       </div>
@@ -59,8 +59,6 @@
     </div>
 
     <div class="col-sm-2"></div>
-    <div class="push"></div>
-    <div class="clearfix"></div>
   </div>
   @stop
   

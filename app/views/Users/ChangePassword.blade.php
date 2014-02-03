@@ -1,7 +1,7 @@
 @extends('Main.Boilerplate');
 
 @section('htmltag')
-  <html id="register-page" class="nav-no-border" style="background: url( {{{ asset('assets/images/' . $bg) }}} )">
+  <html id="change-pass-page" style="background: url( {{{ asset('assets/images/' . $bg) }}} )">
 @stop
 
 @section('title')
@@ -12,8 +12,12 @@
     <div class="container push-footer-wrapper">
       <div class="col-sm-2"></div>
 
-      <div class="col-sm-8">
+      <div class="col-sm-8 panel panel-default">
+          <div class="panel-heading">
+              <h3 class="panel-title"></span> {{ trans( 'users.change password' ) }} </h3>
+          </div>
 
+          <div class="panel-body">
         {{ Form::open(array('route' => array('users.storeNewPass', $user['username']))) }}
 
           <div class="form-group">
@@ -34,14 +38,13 @@
             {{ $errors->first('new_password_confirmation', "<span class='help-block alert alert-danger'>:message</span>") }}
           </div>
 
-          <button type="submit" class="btn btn-warning pull-right">{{ trans('users.confirm') }}</button>
+          <button type="submit" class="btn btn-success pull-right">{{ trans('users.confirm') }}</button>
           
         {{ Form::close() }}
     </div>
+    </div>
 
     <div class="col-sm-2"></div>
-
-    <div class="push"></div>
 
   </div>
   @stop

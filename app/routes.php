@@ -12,22 +12,22 @@
 */
 
 //search
-Route::get(Str::slug(trans('main.search')), 'SearchController@byQuery');
+Route::get('search', 'SearchController@byQuery');
 Route::get('typeahead/{query}', array('uses' => 'SearchController@typeAhead', 'as'   => 'typeahead'));
 Route::get('typeahead-actor/{query}', array('uses' => 'SearchController@castTypeAhead', 'as'   => 'typeahead-cast'));
 
 //homepage and footer
 Route::get('/', array('uses' => 'HomeController@index', 'as' => 'home'));
-Route::get(Str::slug(trans('main.privacyUrl')), array('uses' => 'HomeController@privacy', 'as' => 'privacy'));
-Route::get(Str::slug(trans('main.tosUrl')), array('uses' => 'HomeController@tos', 'as' => 'tos'));
-Route::get(Str::slug(trans('main.contactUrl')), array('uses' => 'HomeController@contact', 'as' => 'contact'));
-Route::post(Str::slug(trans('main.contactUrl')), array('uses' => 'HomeController@submitContact', 'as' => 'submit.contact'));
+Route::get('privacy', array('uses' => 'HomeController@privacy', 'as' => 'privacy'));
+Route::get('tos', array('uses' => 'HomeController@tos', 'as' => 'tos'));
+Route::get('contact', array('uses' => 'HomeController@contact', 'as' => 'contact'));
+Route::post('contact', array('uses' => 'HomeController@submitContact', 'as' => 'submit.contact'));
 
 //news 
 Route::resource(Str::slug(trans('main.news')), 'NewsController');
 Route::post('news/external', array('uses' => 'NewsController@updateFromExternal', 'as' => 'news.ext'));
 
-//movies/series 
+//movies/series
 Route::resource(Str::slug(trans('main.series')), 'SeriesController');
 Route::resource(Str::slug(trans('main.movies')), 'MoviesController');
 
@@ -56,25 +56,25 @@ Route::post('people/unlink', array('uses' => 'ActorController@unlinkTitle', 'as'
 Route::post('people/knownFor', array('uses' => 'ActorController@knownFor', 'as' => 'people.knownFor'));
 
 //users
-Route::resource(Str::slug(trans('main.users')), 'UserController', array('except' => array('index')));
-Route::get(Str::slug(trans('main.users')) . '/{id}/favorites', array('uses' => 'UserController@showFavorites', 'as' => 'favorites'));
-Route::get(Str::slug(trans('main.users')) . '/{id}/reviews', array('uses' => 'UserController@showReviews', 'as' => 'reviews'));
-Route::get(Str::slug(trans('main.users')) . '/{id}/settings', array('uses' => 'UserController@edit', 'as' => 'settings'));
-Route::post(Str::slug(trans('main.users')) . '/makeMini', array('uses' => 'UserController@miniProfile', 'as' => 'users.mini-profile'));
-Route::get(Str::slug(trans('main.users')) . '/{username}/ban','UserController@ban');
-Route::get(Str::slug(trans('main.users')) . '/{username}/unban', 'UserController@unban');
-Route::get(Str::slug(trans('main.users')) . '/{username}/suspend', 'UserController@suspend');
-Route::post(Str::slug(trans('main.users')) . '/{username}/assignGroup', 'UserController@assignToGroup');
-Route::get(Str::slug(trans('main.users')) . '/{username}/change-password', array('uses' => 'UserController@changePassword', 'as' => 'changePass'));
-Route::post(Str::slug(trans('main.users')) . '/{username}/change-password', array('uses' => 'UserController@storeNewPass', 'as' => 'users.storeNewPass'));
-Route::post(Str::slug(trans('main.users')) . '/{username}/avatar', array('uses' => 'UserController@avatar', 'as' => 'users.avatar'));
-Route::post(Str::slug(trans('main.users')) . '/{username}/bg', array('uses' => 'UserController@background', 'as' => 'users.bg'));
+Route::resource('users', 'UserController', array('except' => array('index')));
+Route::get('users/{id}/favorites', array('uses' => 'UserController@showFavorites', 'as' => 'favorites'));
+Route::get('users/{id}/reviews', array('uses' => 'UserController@showReviews', 'as' => 'reviews'));
+Route::get('users/{id}/settings', array('uses' => 'UserController@edit', 'as' => 'settings'));
+Route::post('users/makeMini', array('uses' => 'UserController@miniProfile', 'as' => 'users.mini-profile'));
+Route::get('users/{username}/ban','UserController@ban');
+Route::get('users/{username}/unban', 'UserController@unban');
+Route::get('users/{username}/suspend', 'UserController@suspend');
+Route::post('users/{username}/assignGroup', 'UserController@assignToGroup');
+Route::get('users/{username}/change-password', array('uses' => 'UserController@changePassword', 'as' => 'changePass'));
+Route::post('users/{username}/change-password', array('uses' => 'UserController@storeNewPass', 'as' => 'users.storeNewPass'));
+Route::post('users/{username}/avatar', array('uses' => 'UserController@avatar', 'as' => 'users.avatar'));
+Route::post('users/{username}/bg', array('uses' => 'UserController@background', 'as' => 'users.bg'));
 Route::get('UserController@search', 'UserController@search');
 
 //login/logout 
-Route::get(Str::slug(trans('main.login')), 'SessionController@create');
-Route::get(Str::slug(trans('main.logout')), 'SessionController@logOut');
-Route::get(Str::slug(trans('main.register')), 'UserController@create');
+Route::get('login', 'SessionController@create');
+Route::get('logout', 'SessionController@logOut');
+Route::get('register', 'UserController@create');
 Route::resource('sessions', 'SessionController');
 Route::get('forgot-password', 'UserController@requestPassReset');
 Route::post('forgot-password', 'UserController@sendPasswordReset');

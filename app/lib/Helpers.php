@@ -373,11 +373,11 @@ class Helpers
 	 * 
 	 * @return string
 	 */
-	public static function profileUrl()
+	public static function profileUrl($user = null)
 	{
-		$user = self::loggedInUser();
+		$user = $user ?: self::loggedInUser();
 
-		return self::url($user->username, $user->id, 'users');
+		return self::url($user->username, $user->id, 'users', false);
 	}
 
 	/**
@@ -402,10 +402,9 @@ class Helpers
 	/**
 	 * Makes a fully qualified urs from provider params.
 	 * 
-	 * @param  string $title 
 	 * @return array
 	 */
-	public static function url($resource, $id, $controller = 'movies')
+	public static function url($resource, $id, $controller = 'movies', $slug = true)
 	{
 		if ($controller == 'movie')
 		{
@@ -426,7 +425,7 @@ class Helpers
 		$resource = str_replace('  ', $s, trim($resource));
 		$resource = str_replace(' ', $s, trim($resource));
 
-		$controller = Str::slug(trans("main.$controller"));
+		$controller = $slug ? Str::slug(trans("main.$controller")) : $controller;
 
 		if ($case && $case == 'lowercase')
 		{

@@ -55,7 +55,7 @@ return array(
 	"not_in"           => "The selected :attribute is invalid.",
 	"numeric"          => "The :attribute must be a number.",
 	"regex"            => "The :attribute format is invalid.",
-	"required"         => "The :attribute field is required.",
+	"required"         => "ต้องระบุ :attribute",
 	"required_if"      => "The :attribute field is required when :other is :value.",
 	"required_with"    => "The :attribute field is required when :values is present.",
 	"required_without" => "The :attribute field is required when :values is not present.",
@@ -93,6 +93,10 @@ return array(
 	|
 	*/
 
-	'attributes' => array(),
+	'attributes' => array(
+		'username' 	=> 'ชื่อผู้ใช้',
+		'email' 	=> 'อีเมล์',
+		'password' 	=> 'รหัสผ่าน'
+	),
 
 );

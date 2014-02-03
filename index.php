@@ -1,5 +1,9 @@
 <?php
-
+function cs($var) {
+    echo '<pre>';
+    print_r($var);
+    echo '</pre>';
+}
 /**
  * Laravel - A PHP Framework For Web Artisans
  *

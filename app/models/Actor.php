@@ -19,7 +19,7 @@ class Actor extends Eloquent
     {
         if ( ! $value)
         {
-            return 'assets/images/imdbnoimage.jpg';
+            return 'assets/images/nangkakkak.com-empty.png';
         }
 
         return $value;

@@ -1,5 +1,9 @@
 @extends('Main.Boilerplate')
 
+@section('htmltag')
+	<html id="browse">
+@stop
+
 @section('bodytag')
 	<body class="padding nav" data-url="{{ url() }}">
 @stop
@@ -8,14 +12,15 @@
 @section('content')
 
   <div class="browse container push-footer-wrapper">
-
-  <div class="row pagination-top">{{ $data->appends(array())->links() }}
-
-  	@if(Helpers::hasAccess('titles.create'))	
-  		<a style="margin-bottom:10px" href="{{ url(Str::slug(trans('main.movies')) . '/create') }}" class="pull-right hidden-xs btn btn-success">{{ trans('main.create new') }}</a>
-  	@endif
-  	
-  </div>
+      <ol class="breadcrumb breadcrumb-arrow" style="margin-bottom: 5px;">
+          <li><a href="#">{{ trans('main.home') }}</a></li>
+          <li class="active"><span>{{ trans('main.movies') }}</span></li>
+          <li class="breadcrumb-tools">
+              @if(Helpers::hasAccess('titles.create'))
+              <a href="{{ url(Str::slug(trans('main.movies')) . '/create') }}" class="pull-right hidden-xs btn btn-inverse">{{ trans('main.create new') }}</a>
+              @endif
+          </li>
+      </ol>
 
 	@include('Partials.FilterBar', array('action' => Str::slug(head(Request::segments()))))
 			
@@ -66,7 +71,7 @@
 		@endif
      
 	</div> 
-	{{ $data->appends(array())->links() }}
+	<div class="pagination-bottom">{{ $data->appends(array())->links() }}</div>
 <div class="push"></div>				
 </div>
 

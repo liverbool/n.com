@@ -9,7 +9,7 @@
 @stop
 
 @section('bodytag')
-  <html class="nav-no-border">
+  <html>
 @stop
 
 @section('content')
@@ -30,7 +30,7 @@
       {{ Form::open(array('url' => '/social/twitter/email')) }}
 
       <div class="form-group">
-        <label class="mar-bot" for="email"><i class="fa fa-user"></i></span> {{ trans( 'main.twitter mail expl' ) }} </label>
+        <label for="email"><i class="fa fa-user"></i></span> {{ trans( 'main.twitter mail expl' ) }} </label>
         {{ Form::text('email', Input::old('email'), array('class' => 'form-control')) }}
         
         {{ $errors->first('email', "<span class='help-block alert alert-danger'>:message</span>") }}

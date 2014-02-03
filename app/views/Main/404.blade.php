@@ -1,7 +1,7 @@
 @extends('Main.Boilerplate')
 
 @section('htmltag')
-  <html id="not-found" class="nav-no-border" style="background: url( {{{ asset('assets/images/' . $bg) }}} )">
+  <html id="not-found" style="background: url( {{{ asset('assets/images/' . $bg) }}} )">
 @stop
 
 @section('title')

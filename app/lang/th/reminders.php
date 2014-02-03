@@ -13,12 +13,12 @@ return array(
 	|
 	*/
 
-	"password" => "Passwords must be at least six characters and match the confirmation.",
+	"password" => "รหัสผ่านจะต้องมีอย่างน้อย 6 ตัวอักษร และจะต้องตรงกับรหัสยืนยันด้วย",
 
-	"user" => "We can't find a user with that e-mail address.",
+	"user" => "ไม่พบผู้ใช้งานตามอีเมล์นี้",
 
-	"token" => "This password reset token is invalid.",
+	"token" => "รหัสลับสำหรับแก้ไขรหัสผ่านไม่ถูกต้อง",
 
-	"sent" => "Password reminder sent!",
+	"sent" => "รหัสผ่านถูกส่งไปแล้ว!",
 
 );

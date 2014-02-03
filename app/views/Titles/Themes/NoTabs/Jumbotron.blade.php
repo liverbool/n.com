@@ -1,5 +1,6 @@
 <section class="jumbotron title" style="background-image: url({{{ asset($data->getBackground()) }}})">
   <div class="transparent">
+    <div class="container">
     <section class="row title-jumbo-row">
       <a href="{{ Helpers::url($data->getTitle(), $data->getId(), $data->getType()) }}" class="col-sm-2 hidden-xs hidden-sm title-poster"><img class="img-responsive" src="{{{ asset($data->getPoster()) }}}" alt="{{{ $data->getTitle() }}}"></a>
       <div class="col-sm-12 col-md-10">
@@ -114,5 +115,6 @@
       </div>
 
     </section>
+  </div>
   </div>
 </section>

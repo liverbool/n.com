@@ -4,7 +4,7 @@ return array(
 	"providers"  => array (
 		"Google"     => array (
 			"enabled"    => true,
-			"keys"       => array ( "id" => "**************", "secret" => "**************" ),
+			"keys"       => array ( "id" => "970011918161.apps.googleusercontent.com", "secret" => "AIzaSyAbqRqAaFo9R8i0vSh_hhzU_rlVv_7kkzM" ),
 			"scope"      => "https://www.googleapis.com/auth/userinfo.profile ".
                             "https://www.googleapis.com/auth/userinfo.email"   ,
 			),

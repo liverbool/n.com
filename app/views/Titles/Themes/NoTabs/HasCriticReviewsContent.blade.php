@@ -41,6 +41,9 @@
 
 {{--critic review column--}}
 <section class="col-sm-8 col-md-5">
+
+    @include('Titles.Themes.NoTabs.facebookComment')
+
   <div class="bordered-heading"><span class="text-border-top"><i class="fa fa-thumbs-o-down"></i> {{ trans('main.critic reviews') }}</span>
   
     @if (Helpers::hasAccess('reviews.update'))

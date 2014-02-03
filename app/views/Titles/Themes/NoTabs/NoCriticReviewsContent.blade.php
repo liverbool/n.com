@@ -54,6 +54,8 @@
 {{--user reviews column--}}
 <section class="col-sm-5">
 
+    @include('Titles.Themes.NoTabs.facebookComment')
+
   <div class="bordered-heading">
     <span class="text-border-top"> <i class="fa fa-thumbs-o-up"></i> {{ trans('main.user reviews') }}</span>
 

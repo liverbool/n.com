@@ -339,7 +339,10 @@ class Router implements HttpKernelInterface, RouteFiltererInterface {
 
 		foreach ($this->getResourceMethods($defaults, $options) as $m)
 		{
-			$this->{'addResource'.ucfirst($m)}($name, $base, $controller, $options);
+            // To bypass route on compile regura (symfony compile route)
+            $key = preg_match('/\w+/', $base) ? $base : $m;
+
+			$this->{'addResource'.ucfirst($m)}($name, $key, $controller, $options);
 		}
 	}
 

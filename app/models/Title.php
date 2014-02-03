@@ -47,7 +47,7 @@ class Title extends Eloquent
     {
         if ( ! $value)
         {
-            return 'assets/images/imdbnoimage.jpg';
+            return 'assets/images/nangkakkak.com-empty.png';
         }
 
         if ( ! str_contains($value, 'http') && ! str_contains($value, 'imdb'))

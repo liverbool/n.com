@@ -1,7 +1,7 @@
 @extends('Main.Boilerplate')
 
 @section('htmltag')
-  <html id="login-page" class="nav-no-border" style="background: url( {{{ asset('assets/images/' . $bg) }}} )">
+  <html id="login-page" style="background: url( {{{ asset('assets/images/' . $bg) }}} )">
 @stop
 
 @section('title')
@@ -12,7 +12,7 @@
     <div class="container push-footer-wrapper">
       <div class="col-md-2"></div>
 
-      <div class="col-md-8">
+      <div class="col-md-8 panel panel-default">
 
       	<div class="row"> @include('Partials.Response') </div>
 
@@ -36,15 +36,15 @@
 	            {{ Form::password('password', array('class' => 'form-control')) }}
 	            {{ $errors->first('password', "<span class='help-block alert alert-danger'>:message</span>") }}
 	          </div>
-	          
-	          <hr>
 
 	          <div class="login-remember-row">
-	            <label for="remember">{{ trans('users.remember me') }}</label>
-	            {{ Form::checkbox('remember', 1, true, array('id' => 'remember')) }}
+                  <div class="checkbox">
+    	                {{ Form::checkbox('remember', 1, true, array('id' => 'remember')) }}
+                        <label for="remember">{{ trans('users.remember me') }}</label>
+                  </div>
 
-	            <a href="{{ url('forgot-password') }}">{{ trans('users.forgot your password') }}</a>
-	            <button type="submit" class="btn btn-warning pull-right">{{ trans('users.login') }}</button>
+                  <a href="{{ url('forgot-password') }}">{{ trans('users.forgot your password') }}</a>
+                  <button type="submit" class="btn btn-primary pull-right">{{ trans('users.login') }}</button>
 	          </div>
 
 	        {{ Form::close() }}
@@ -52,8 +52,6 @@
     </div>
 
     <div class="col-md-2"></div>
-
-    <div class="push"></div>
 
   </div>
   @stop

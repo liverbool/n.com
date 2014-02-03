@@ -371,7 +371,9 @@ class Route {
 	 */
 	public function bindParameters(Request $request)
 	{
-		preg_match($this->compiled->getRegex(), '/'.$request->path(), $matches);
+        $pattern = $this->compiled->getRegex() . 'i';
+        $path = '/' . urldecode($request->path());
+        preg_match($pattern, $path, $matches);
 
 		$parameters = $this->combineMatchesWithKeys(array_slice($matches, 1));
 

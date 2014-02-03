@@ -15,7 +15,7 @@
     <div class="col-sm-12">
       <h3 class="heading">{{ trans('users.edit user heading') }} <i class="fa fa-pencil"></i></h3 class="heading">
 
-      <p class="padding-top-bot"> {{ trans('users.edit user expl') }} <a href="{{ Helpers::url($user->username, $user->id, 'users') . '/change-password' }}">{{ trans('main.here') }}</a></p>
+      <p class="padding-top-bot"> {{ trans('users.edit user expl') }} <a href="{{ Helpers::profileUrl($user) . '/change-password' }}">{{ trans('main.here') }}</a></p>
     </div>
 
     <div class="row"> @include('Partials.Response') </div>
@@ -53,7 +53,7 @@
     </section>
 
     <div class="col-sm-12">
-      {{ Form::model($user, array('route' => array(Str::slug(trans('main.users')).'.update', $user->username), 'method' => 'PUT')) }}
+      {{ Form::model($user, array('route' => array('users.update', $user->username), 'method' => 'PUT')) }}
         
         <div class="form-group">
           {{ Form::label('first_name', trans('users.first name')) }}
@@ -75,7 +75,7 @@
 
        
 
-          <a type="button" href="{{ Helpers::url($user->username, $user->id, 'users') }}" class="btn btn-warning">
+          <a type="button" href="{{ Helpers::profileUrl($user) }}" class="btn btn-warning">
             <i class="fa fa-arrow-left"></i> {{ trans('main.back') }}
           </a>
 
@@ -84,7 +84,6 @@
       {{ Form::close() }}
     </div>
 
-  <div class="push"></div>
   </div>
 
 
