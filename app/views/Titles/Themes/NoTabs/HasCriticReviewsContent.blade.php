@@ -1,6 +1,6 @@
 {{--Cast column begins--}}
 <section class="col-sm-4 col-md-3">
- <div class="bordered-heading"><span class="text-border-top"><i class="fa fa-user"></i> {{ trans('main.cast') }}</span>
+ <div class="title-actors-header"><span class="text-border-top"><i class="fa fa-stop"></i> {{ trans('main.cast') }}</span>
   
     @if (Helpers::hasAccess('titles.edit'))
 
@@ -10,7 +10,7 @@
 
   </div>
 
- <section id="grid" class="order cast-grid">
+ <section class="cast-grid">
 
     @foreach($data->getCast() as $k => $actor)
 
@@ -163,3 +163,17 @@
   @endif
 
 </section>
+
+@section('scripts')
+
+{{ HTML::script('assets/js/masonry.pkgd.min.js') }}
+<script>
+    var $container = $('.cast-grid');
+    // initialize
+    $container.masonry({
+        //columnWidth: 200,
+        itemSelector: '.title-actors-image'
+    });
+</script>
+
+@stop

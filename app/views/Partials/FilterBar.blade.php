@@ -1,4 +1,4 @@
-<div class="row btn-row well">
+<div class="row well">
     <div class="col-xs-3 hidden-xs hidden-sm">
         <div class="btn-group" id="grid-sorters">
             <button type="button" class="btn btn-sort" data-sortby="popularity">{{ trans('main.popularity') }}</button>
@@ -7,7 +7,7 @@
     </div>
 
     <div class="col-sm-12 col-md-9">
-        <div class="btn-group hidden-xs">
+        <div class="btn-group hidden-xs pull-right">
             {{ Form::open(array('url' => $action, 'class' => 'form-inline', 'method' => 'GET')) }}
 
             <strong class="hidden-sm hidden-md">{{ trans('main.year') }}:</strong>

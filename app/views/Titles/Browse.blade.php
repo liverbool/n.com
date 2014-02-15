@@ -11,9 +11,10 @@
 
 @section('content')
 
-  <div class="browse container push-footer-wrapper">
-      <ol class="breadcrumb breadcrumb-arrow" style="margin-bottom: 5px;">
-          <li><a href="#">{{ trans('main.home') }}</a></li>
+  <div class="browse container">
+      <div class="row">
+      <ol class="breadcrumb breadcrumb-arrow">
+          <li><a href="{{ url('/') }}">{{ trans('main.home') }}</a></li>
           <li class="active"><span>{{ trans('main.movies') }}</span></li>
           <li class="breadcrumb-tools">
               @if(Helpers::hasAccess('titles.create'))
@@ -23,45 +24,55 @@
       </ol>
 
 	@include('Partials.FilterBar', array('action' => Str::slug(head(Request::segments()))))
-			
-	<div class="row"> @include('Partials.Response') </div>
-    
-    <div id="grid" class="browse-grid">	
+      </div>
+
+      <div class="row"> @include('Partials.Response') </div>
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-8 browse-col">
+    <div id="grid" class="browse-grid">
 		
 		@if ( ! $data->isEmpty())
 
 			
 			@foreach($data as $k => $r)
 
-			    <figure class="col-sm-3 col-lg-2 col-xs-6" data-filter-class='{{ Helpers::genreFilter($r->genre) }}' data-popularity="{{ $r['mc_num_of_votes'] ? $r['mc_num_of_votes'] : ($r['imdb_votes_num'] ? $r['imdb_votes_num'] : $r['tmdb_popularity'])}}" data-name="{{{ $r->title }}}" data-release="{{{ $r->year }}}">
-			    	<div class="img-container">
-			    		<a href="{{Helpers::url($r['title'], $r['id'], $r['type'])}}">
-			    			<img class ="img-responsive" src="{{str_replace('w185', 'w342', $r->poster) }}" alt="{{{ $r['title'] }}}">
-						</a>
-
-				  	  <figcaption title="{{{ $r->title }}}" >
-				  	  	<a href="{{Helpers::url($r['title'], $r['id'], $r['type'])}}"> {{  Helpers::shrtString($r['title']) }} </a>
-						
+			    <figure class="col-sm-4 col-lg-3 col-xs-8" ontouchstart="this.classList.toggle('hover');" data-filter-class='{{ Helpers::genreFilter($r->genre) }}' data-popularity="{{ $r['mc_num_of_votes'] ? $r['mc_num_of_votes'] : ($r['imdb_votes_num'] ? $r['imdb_votes_num'] : $r['tmdb_popularity'])}}" data-name="{{{ $r->title }}}" data-release="{{{ $r->year }}}">
 
 
-				  	  	<section class="row action-buttons">
+                            <div class="img-container">
+                            <a class="flip-container-vertical" href="{{Helpers::url($r['title'], $r['id'], $r['type'])}}">
+                                <div class="flipper">
+                                <img class ="img-responsive flip-front" src="{{str_replace('w185', 'w342', $r->poster) }}" alt="{{{ $r['title'] }}}">
 
-				  	  		@include('Partials.AddToListButtons')
+                                    <div class="flip-back">
+                                        <h5>{{ $r['title'] }}</h5>
+                                    </div>
+                                </div>
+                            </a>
 
-			    			
-			    			@if ($r['mc_critic_score'])
-								<span class="pull-right">{{ substr($r['mc_critic_score'], 0, -1) . '/10' }}</span>
-							@elseif ($r['imdb_rating'])
-			    				<span class="pull-right">{{ ! str_contains($r['imdb_rating'], '.') ? $r['imdb_rating'] . '.0' : $r['imdb_rating'] . '/10'}} </span>
-			    			@elseif ($r['tmdb_rating'])
-			    				<span class="pull-right">{{ ! str_contains($r['tmdb_rating'], '.') ? $r['tmdb_rating'] . '.0' : $r['tmdb_rating'] . '/10'}}</span>
-			    			@endif
-			    			
-				  	  	</section>
+                          <figcaption title="{{{ $r->title }}}" >
+                            <a href="{{Helpers::url($r['title'], $r['id'], $r['type'])}}"> {{  Helpers::shrtString($r['title']) }} </a>
 
-				  	  </figcaption>
 
-			    	</div>	      
+
+                            <section class="row action-buttons">
+
+                                @include('Partials.AddToListButtons')
+
+
+                                @if ($r['mc_critic_score'])
+                                    <span class="pull-right">{{ substr($r['mc_critic_score'], 0, -1) . '/10' }}</span>
+                                @elseif ($r['imdb_rating'])
+                                    <span class="pull-right">{{ ! str_contains($r['imdb_rating'], '.') ? $r['imdb_rating'] . '.0' : $r['imdb_rating'] . '/10'}} </span>
+                                @elseif ($r['tmdb_rating'])
+                                    <span class="pull-right">{{ ! str_contains($r['tmdb_rating'], '.') ? $r['tmdb_rating'] . '.0' : $r['tmdb_rating'] . '/10'}}</span>
+                                @endif
+
+                            </section>
+
+                          </figcaption>
+
+                        </div>
 			    </figure>
 
 		    @endforeach
@@ -69,10 +80,12 @@
 		@else
 			<div><h3 class="reviews-not-released"> {{ trans('main.no results') }}</h3></div>
 		@endif
-     
-	</div> 
-	<div class="pagination-bottom">{{ $data->appends(array())->links() }}</div>
-<div class="push"></div>				
+
+	</div>
+          <div class="pagination-bottom">{{ $data->appends(array())->links() }}</div>
+          </div>
+          <div class="col-xs-6 col-md-4"></div>
+	</div>
 </div>
 
 @stop

@@ -39,7 +39,7 @@
 
 <section class="browse-grid panel panel-default panel-theaters">
     <div class="panel-heading">
-        <h3 class="panel-title"><span><i class="fa fa-fire"></i>{{ trans('main.in theaters') }}</span>
+        <h3 class="panel-title"><span><i class="fa fa-stop"></i>{{ trans('main.in theaters') }}</span>
 
             @if (Helpers::hasAccess('titles.update'))
 
@@ -57,7 +57,7 @@
         @foreach($playing->slice(0, 6) as $k => $movie)
 
         <figure class="col-sm-2">
-            <div class="figure-cover">
+            <div class="img-container">
                 <a href="{{ Helpers::url($movie['title'], $movie['id'], $movie['type']) }}">
                     <img src="{{{ asset($movie['poster']) }}}" class="img-responsive" alt="{{ 'Poster of ' . $movie['title'] }}">
                 </a>
@@ -77,14 +77,14 @@
 
 <section class="browse-grid panel panel-default panel-upcoming">
     <div class="panel-heading">
-        <h3 class="panel-title"><span><i class="fa fa-fire"></i>{{ trans('main.upcoming') }}</span></h3>
+        <h3 class="panel-title"><span><i class="fa fa-stop"></i>{{ trans('main.upcoming') }}</span></h3>
     </div>
 
     <div class="panel-body">
         @foreach($upcoming as $k => $movie)
 
         <figure class="col-sm-2">
-            <div class="figure-cover">
+            <div class="img-container">
             <a href="{{ Helpers::url($movie['title'], $movie['id'], $movie['type']) }}">
                 <img src="{{{ asset($movie['poster']) }}}" class="img-responsive" alt="{{ 'Poster of ' . $movie['title'] }}">
             </a>
@@ -101,19 +101,23 @@
 
 @endif
 
+@if (isset($latests) && ! $latests->isEmpty())
+@include('Main.Lastests')
+@endif
+
 @if (isset($actors) && ! $actors->isEmpty())
 
 <section class="browse-grid panel panel-default panel-actors">
 
     <div class="panel-heading">
-        <h3 class="panel-title"><span><i class="fa fa-fire"></i>{{ trans('main.popular actors') }}</span></h3>
+        <h3 class="panel-title"><span><i class="fa fa-stop"></i>{{ trans('main.popular actors') }}</span></h3>
     </div>
 
     <div class="panel-body">
         @foreach($actors as $k => $v)
 
         <figure class="col-sm-2">
-            <div class="figure-cover">
+            <div class="img-container">
             <a href="{{ Helpers::url($v['name'], $v['id'], 'people') }}">
                 <img src="{{{ asset($v['image']) }}}" class="img-responsive" alt="{{ 'Poster of ' . $v['name'] }}">
             </a>
@@ -135,7 +139,7 @@
     <div class="col-sm-7">
         <div class="panel panel-default panel-news">
             <div class="panel-heading">
-                <h3 class="panel-title"><span><i class="fa fa-fire"></i>{{ trans('main.latest news') }}</span></h3>
+                <h3 class="panel-title"><span><i class="fa fa-stop"></i>{{ trans('main.latest news') }}</span></h3>
             </div>
 
             <div class="panel-body">
@@ -209,13 +213,11 @@
         @if (isset($facebook))
         <div class="panel panel-default panel-facebook">
             <div class="panel-heading">
-                <h3 class="panel-title"><span><i class="fa fa-fire"></i>{{ trans('main.Find us on Facebook') }}</span>
+                <h3 class="panel-title"><span><i class="fa fa-stop"></i>{{ trans('main.Find us on Facebook') }}</span>
                 </h3>
             </div>
             <div class="panel-body">
-                <div class="col-sm-12 likebox">
-                    <iframe src="//www.facebook.com/plugins/likebox.php?href={{{ $facebook }}}&amp;width&amp;height=290&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=false&amp;show_border=true" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:290px;" allowTransparency="true"></iframe>
-                </div>
+                <iframe src="//www.facebook.com/plugins/likebox.php?href={{{ $facebook }}}&amp;width&amp;height=290&amp;colorscheme=light&amp;show_faces=true&amp;header=true&amp;stream=false&amp;show_border=true" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:290px;" allowTransparency="true"></iframe>
             </div>
         </div>
 

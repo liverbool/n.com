@@ -10,115 +10,115 @@ use Lib\Repository\Review\ReviewRepositoryInterface as RevRepo;
 
 class DbTitle implements TitleRepositoryInterface
 {
-	/**
-	 * Title model instance.
-	 * 
-	 * @var Title
-	 */
-	private $title;
+    /**
+     * Title model instance.
+     *
+     * @var Title
+     */
+    private $title;
 
-	/**
-	 * Writer instance.
-	 * 
-	 * @var Lib\Services\Db\Writer
-	 */
-	public $dbWriter;
+    /**
+     * Writer instance.
+     *
+     * @var Lib\Services\Db\Writer
+     */
+    public $dbWriter;
 
     /**
      * Review model instance.
-     * 
+     *
      * @var Review
      */
     private $review;
 
-	/**
+    /**
      * ImagesHandler instance.
-     * 
+     *
      * @var Lib\Services\Handlers\ImagesHandler
      */
     private $images;
 
     /**
      * Data provider instance.
-     * 
+     *
      * @var Lib\Repository\Data\DataProviderInterface
      */
     public $provider;
 
-	public function __construct(Title $title, Writer $dbWriter, Imgs $images, RevRepo $review, Data $provider)
-	{
+    public function __construct(Title $title, Writer $dbWriter, Imgs $images, RevRepo $review, Data $provider)
+    {
         $this->title    = $title;
-		$this->dbWriter = $dbWriter;
-		$this->images   = $images;
+        $this->dbWriter = $dbWriter;
+        $this->images   = $images;
         $this->review   = $review;
         $this->provider = $provider;
-	}
+    }
 
-	/**
-	 * Updates existing title from form input.
-	 * 
-	 * @param  array $input 
-	 * @param  string $id
-	 * @return void
-	 */
-	public function update(array $input, $id)
-	{
+    /**
+     * Updates existing title from form input.
+     *
+     * @param  array $input
+     * @param  string $id
+     * @return void
+     */
+    public function update(array $input, $id)
+    {
         $title = $this->title->findOrFail($id);
 
-		$this->updateModelAttr($title, $input);
+        $this->updateModelAttr($title, $input);
 
         Event::fire('Titles.Updated', array($title, Carbon::now()));
-	}
+    }
 
     /**
      * Updates titles reviews from metacritic.
-     * 
+     *
      * @return void
      */
     public function updateReviews(Title $title)
     {
-      
+
         $this->review->get($title)->parse()->saveFromMetacritic();
     }
 
-	/**
+    /**
      * Creates a new title.
-     * 
+     *
      * @param  array $input
      * @return void
      */
     public function create(array $input)
-	{
-		foreach ($input as $k => $v)
-		{
-			$this->title->$k = $v;
-		}
+    {
+        foreach ($input as $k => $v)
+        {
+            $this->title->$k = $v;
+        }
 
-		$this->title->save();
+        $this->title->save();
 
         Event::fire('Titles.Created', array($this->title, Carbon::now()));
-	}
+    }
 
     /**
      * Fetches and saves all available data about title.
-     * 
+     *
      * @param  Title $title
      * @return Title
      */
     public function getCompleteTitle(Title $title)
     {
         $provider = $this->provider->getFullTitle($title);
-  
+
         $this->updateReviews($title);
 
         Event::fire('Titles.FullyScraped', array($provider, Carbon::now()));
-        
-        return $this->saveAndReturn($provider, $title->id);  
+
+        return $this->saveAndReturn($provider, $title->id);
     }
 
     /**
      * Fetches title from db using uri 245-game-of-thrones etc.
-     * 
+     *
      * @param  string $title
      * @return Title
      */
@@ -129,7 +129,7 @@ class DbTitle implements TitleRepositoryInterface
 
         //get title from db
         $title = $this->title->byId($id);
-    
+
         //if title doesnt have any providers ids, is not created by user and provider is not db
         //we'll bail with 404
         if ( ! $title->imdb_id && ! $title->tmdb_id && $title->alow_update && $this->provider->name != 'db')
@@ -140,13 +140,13 @@ class DbTitle implements TitleRepositoryInterface
         return $title;
     }
 
-	/**
-	 * Returns movies for displaying on movie index page.
-	 * 
-	 * @return Collection
-	 */
-	public function titleIndex($input, $type = null)
-	{		
+    /**
+     * Returns movies for displaying on movie index page.
+     *
+     * @return Collection
+     */
+    public function titleIndex($input, $type = null)
+    {
         if ($type)
         {
             $query = Title::where('type', $type);
@@ -181,32 +181,32 @@ class DbTitle implements TitleRepositoryInterface
             $query = $query->where('year', '<', (int) $input['max_year']);
         }
 
-        return $query->orderBy(Helpers::getOrdering(), 'desc')->paginate(18);
-	}
+        return $query->where('poster', '>', 0)->orderBy(Helpers::getOrdering(), 'desc')->paginate(20);
+    }
 
-	/**
-	 * Returns series for displaying on series index page.
-	 * 
-	 * @return Collection
-	 */
-	public function seriesIndex()
-	{		
-		return $this->title->seriesIndex();
-	}
+    /**
+     * Returns series for displaying on series index page.
+     *
+     * @return Collection
+     */
+    public function seriesIndex()
+    {
+        return $this->title->seriesIndex();
+    }
 
     /**
      * Returns movies for displaying on movies index page.
-     * 
+     *
      * @return Collection
      */
     public function movieIndex()
-    {       
+    {
         return $this->title->movieIndex();
     }
 
-	/**
+    /**
      * Saves title to database and returns it.
-     * 
+     *
      * @param  DataProviderInterface $provider
      * @param  int $id
      * @return Title
@@ -218,8 +218,8 @@ class DbTitle implements TitleRepositoryInterface
             $str = str_random(15);
 
             $this->dbWriter->setProvider($provider, $id)
-                           ->setFlags( array('fully_scraped' => 1, 'temp_id' => $str) )
-                           ->saveAll();
+                ->setFlags( array('fully_scraped' => 1, 'temp_id' => $str) )
+                ->saveAll();
 
             //we'll load title by temp id incase something gets
             //messed up because of different language titles
@@ -229,18 +229,18 @@ class DbTitle implements TitleRepositoryInterface
 
     /**
      * Fetches single title by id from db.
-     * 
+     *
      * @param  int/string $id
      * @return Title
      */
     public function byId($id)
     {
-    	return $this->title->byId($id);
+        return $this->title->byId($id);
     }
 
     /**
      * Fetches single title by temp id from db.
-     * 
+     *
      * @param  int/string $id
      * @return Title
      */
@@ -251,7 +251,7 @@ class DbTitle implements TitleRepositoryInterface
 
     /**
      * Checks if given title needs to be fully scraped.
-     * 
+     *
      * @param  Title  $title
      * @return boolean
      */
@@ -291,25 +291,25 @@ class DbTitle implements TitleRepositoryInterface
 
     /**
      * Deletes a title from database.
-     * 
+     *
      * @param  int/string $id
      * @return void
      */
     public function delete($id)
     {
-    	$this->title->findOrFail($id)->delete();
+        $this->title->findOrFail($id)->delete();
 
         Event::fire('Titles.Deleted', array($this->title, Carbon::now()));
     }
 
     /**
      * Handles actor-char additions and associations to title.
-     * 
+     *
      * @param array $input
      * @return  void
      */
     public function addCast($input)
-    {   
+    {
         $this->attachActor($input);
 
         Event::fire('Titles.Modified', array($input['title-id']));
@@ -317,28 +317,28 @@ class DbTitle implements TitleRepositoryInterface
 
     /**
      * Handles actor-char detachment from title.
-     * 
+     *
      * @param array $input
      * @return  void
      */
     public function removeCast($input)
-    {   
-    	$title = $this->title->find($input['title']);
-    	$actor = Actor::find($input['actor']);
+    {
+        $title = $this->title->find($input['title']);
+        $actor = Actor::find($input['actor']);
 
-    	$this->detach($title, $input['actor'], 'actor');
+        $this->detach($title, $input['actor'], 'actor');
 
         Event::fire('Titles.Modified', array($input['title']));
     }
 
     /**
      * Detaches image from title.
-     * 
+     *
      * @param array $input
      * @return  void
      */
     public function detachImage(array $input)
-    {   
+    {
         $title = $this->title->find($input['title-id']);
 
         \Image::where('id', $input['image-id'])->delete();
@@ -348,12 +348,12 @@ class DbTitle implements TitleRepositoryInterface
 
     /**
      * Attaches image to title.
-     * 
+     *
      * @param array $input
      * @return  void
      */
     public function attachImage(array $input)
-    {   
+    {
         $insert = array('title_id' => $input['title-id'], 'web' => $input['image-url']);
         $this->dbWriter->compileInsert('images', $insert)->save();
 
@@ -362,12 +362,12 @@ class DbTitle implements TitleRepositoryInterface
 
     /**
      * Upload and associate image to title.
-     * 
+     *
      * @param array $input
      * @return  void
      */
     public function uploadImage(array $input)
-    {   
+    {
         $title = $this->title->find($input['title-id']);
         $name  = str_random(25);
         $insert = array('local' => asset('assets/images/'.$name.'.jpg'), 'title_id' => $input['title-id']);
@@ -380,15 +380,15 @@ class DbTitle implements TitleRepositoryInterface
 
     /**
      * Handles actor-char relation/names updating.
-     * 
+     *
      * @param array $input
      * @return  void
      */
     public function updateCast($input)
-    {     	
+    {
         $actor = Actor::whereId($input['id'])->with('title')->firstOrFail();
 
-    	$this->updateModelAttr($actor, $input, true);
+        $this->updateModelAttr($actor, $input, true);
 
         Event::fire('Titles.Modified', array($actor->title->first()->id));
     }
@@ -397,7 +397,7 @@ class DbTitle implements TitleRepositoryInterface
      * Updates provided model with all provided values
      * using array keys as model attribute name and
      * array values as attribute value.
-     * 
+     *
      * @param  Eloquent $model
      * @param  array $values
      * @return void
@@ -405,23 +405,23 @@ class DbTitle implements TitleRepositoryInterface
     private function updateModelAttr($model, array $values, $pivot = false)
     {
         $updates = array_except($values, array('char_name', 'pivot_id'));
-       
+
         foreach ($updates as $k => $v)
-    	{
-    		if ($v || $v == '0' || $v === '') $model->$k = $v;
-    	}
+        {
+            if ($v || $v == '0' || $v === '') $model->$k = $v;
+        }
 
         if ($pivot)
         {
             $this->updatePivot($values);
         }
-        
-    	$model->save();
+
+        $model->save();
     }
 
     /**
      * Updates actors_titles pivot table with provided values.
-     * 
+     *
      * @param  array $values
      * @return void
      */
@@ -434,7 +434,7 @@ class DbTitle implements TitleRepositoryInterface
 
     /**
      * Detaches many to many relations.
-     * 
+     *
      * @param  Eloquent $model
      * @param  int/string $id
      * @param  string $relation
@@ -442,25 +442,25 @@ class DbTitle implements TitleRepositoryInterface
      */
     private function detach($model, $id, $relation)
     {
-    	$model->$relation()->detach($id);
+        $model->$relation()->detach($id);
     }
 
     /**
      * Inserts actor into database.
-     * 
+     *
      * @param  string $name
      * @return Actor
      */
     private function insertActor($name)
     {
-    	$this->dbWriter->compileInsert('actors', array('name' => $name))->save();
+        $this->dbWriter->compileInsert('actors', array('name' => $name))->save();
 
-    	return Actor::byName($name);
+        return Actor::byName($name);
     }
 
     /**
      * Attaches actor to title from given input.
-     * 
+     *
      * @param  array $input
      * @return void
      */
@@ -470,28 +470,28 @@ class DbTitle implements TitleRepositoryInterface
         //attaching a new actor to title so we need to
         //insert this actor into db first
         if ( ! isset($input['actor-id']) )
-    	{
-    		$actor = $this->insertActor($input['actor']);
+        {
+            $actor = $this->insertActor($input['actor']);
 
-    		$input['actor-id'] = $actor->id;
-    	}
+            $input['actor-id'] = $actor->id;
+        }
 
-    	$this->dbWriter->compileInsert('actors_titles', array('actor_id' => $input['actor-id'], 
-    								   'title_id' => $input['title-id'], 'char_name' => $input['char']))->save();
+        $this->dbWriter->compileInsert('actors_titles', array('actor_id' => $input['actor-id'],
+                                                              'title_id' => $input['title-id'], 'char_name' => $input['char']))->save();
     }
 
     /**
      * Fetches specified amount of titles that need scraping.
-     * 
+     *
      * @param  integer $amount
      * @return Collection
      */
     public function scrapable($amount = 10)
     {
         return $this->title->where('fully_scraped', 0)
-                           ->where('allow_update', 1)
-                           ->orderBy( Helpers::getOrdering(), 'desc')
-                           ->limit( (int) $amount)
-                           ->get();
+            ->where('allow_update', 1)
+            ->orderBy( Helpers::getOrdering(), 'desc')
+            ->limit( (int) $amount)
+            ->get();
     }
 }

@@ -1,4 +1,6 @@
 .DS_Store
 .idea
+.sass-cache
+codekit-config.json
 imdb/*
 avatars/*

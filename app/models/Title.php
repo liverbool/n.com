@@ -6,14 +6,14 @@ class Title extends Eloquent
 {
     /**
      * Cacher instance.
-     * 
+     *
      * @var Lib\Services\Cache\Cacher
      */
     private $cache;
 
     /**
      * Options instace.
-     * 
+     *
      * @var Lib\Services\Options\Options
      */
     private $options;
@@ -26,21 +26,21 @@ class Title extends Eloquent
 
     /**
      * Format genre so it can be used as a filter for grid.
-     * 
-     * @param  string $value 
+     *
+     * @param  string $value
      * @return string
      */
     public function getGenreAttribute($value)
     {
-       $genre = str_replace(',', ' | ', $value);
+        $genre = str_replace(',', ' | ', $value);
 
-       return trim($genre, ' | ');
+        return trim($genre, ' | ');
     }
 
-     /**
+    /**
      * Returns default image if title doesnt have poster.
-     * 
-     * @param  string $value 
+     *
+     * @param  string $value
      * @return string
      */
     public function getPosterAttribute($value)
@@ -60,8 +60,8 @@ class Title extends Eloquent
 
     /**
      * Formats release date before returning.
-     * 
-     * @param  string $value 
+     *
+     * @param  string $value
      * @return string
      */
     public function getReleaseDateAttribute($value)
@@ -93,17 +93,17 @@ class Title extends Eloquent
 
     public function director()
     {
-       return $this->belongsToMany('Director', 'directors_titles');
+        return $this->belongsToMany('Director', 'directors_titles');
     }
 
     public function writer()
     {
-       return $this->belongsToMany('Writer', 'writers_titles');
+        return $this->belongsToMany('Writer', 'writers_titles');
     }
 
     public function review()
     {
-       return $this->hasMany('Review');
+        return $this->hasMany('Review');
     }
 
     public function season()
@@ -113,107 +113,54 @@ class Title extends Eloquent
 
     /**
      * Featured movies query scope.
-     * 
-     * @param  Illuminate\Database\Eloquent\Builder $query 
+     *
+     * @param  Illuminate\Database\Eloquent\Builder $query
      * @return collection
      */
     public function scopeFeatured($query)
     {
-        if ($this->options->getDataProvider() == 'db')
+        $fet = $query->where('featured', 1)->limit(8)->orderBy('created_at', 'desc')->get();
+
+        if ($this->options->getDataProvider() == 'db' || ! $this->options->autoUpdateData())
         {
-            return $query->where('featured', 1)->limit(8)->orderBy('created_at', 'asc')->get();
-        }
-
-        if ($this->options->useCache())
-        {
-            if ( $fet = $this->cache->get('featured', md5('fet')) )
-            {
-                //check if it has been a day since last featured movies update,
-                //if so then update featured movies now
-                if ($fet->isEmpty() || $fet->first()->updated_at->addDay() <= Carbon::now())
-                {
-                    $fet = $this->updateFeatured();
-                    $this->cache->put('featured', md5('fet'), $fet);
-                }
-
-                return $fet;
-            }
-            else
-            {
-                $fet = $query->where('featured', 1)->limit(8)->orderBy('created_at', 'asc')->get();  
-
-                $this->cache->put('featured', md5('fet'), $fet);
-
-                return $fet;
-            }
-        }
-        else
-        {
-            $fet = $query->where('featured', 1)->limit(8)->orderBy('created_at', 'asc')->get();  
-
-            if ($fet->isEmpty() || $fet->first()->updated_at->addDay() <= Carbon::now())
-            {
-                return $this->updateFeatured();         
-            }
-
             return $fet;
         }
+
+        if ($fet->isEmpty() || $fet->first()->updated_at->addDay() <= Carbon::now())
+        {
+            $fet = $this->updateFeatured();
+        }
+
+        return $fet;
     }
 
     /**
      * Fetches movies that are now playing in theaters.
-     * 
-     * @param  Illuminate\Database\Eloquent\Builder $query 
+     *
+     * @param  Illuminate\Database\Eloquent\Builder $query
      * @return collection
      */
     public function scopeNowPlaying($query)
     {
         $order = Helpers::getOrdering();
+        $playing = $query->where('now_playing', 1)->limit(10)->orderBy($order, 'desc')->get();
 
-        if ($this->options->getDataProvider() == 'db')
+        if ($this->options->getDataProvider() == 'db' || ! $this->options->autoUpdateData())
         {
-            return $query->where('now_playing', 1)->limit(10)->orderBy($order, 'desc')->get();
-        }
-
-        if ($this->options->useCache())
-        {
-            if ( $playing = $this->cache->get('playing', md5('playing')) )
-            {
-                //check if it has been a day since last now playing movies update,
-                //if so then update now playing movies
-                if ($playing->isEmpty() || $playing->first()->updated_at->addDays(2) <= Carbon::now())
-                {
-                    $playing = $this->updatePlaying($order);
-                    $this->cache->put('playing', md5('playing'), $playing);
-                }
-
-                return $playing;
-            }
-            else
-            {
-                $playing = $query->where('now_playing', 1)->limit(10)->orderBy($order, 'desc')->get();
-
-                $this->cache->put('playing', md5('playing'), $playing);
-
-                return $playing;
-            }
-        }
-        else
-        {
-            $playing = $query->where('now_playing', 1)->limit(10)->orderBy($order, 'desc')->get();
-
-            if ($playing->isEmpty() || $playing->first()->updated_at->addDays(2) <= Carbon::now())
-            {
-                return $this->updatePlaying($order);
-            }
-
             return $playing;
         }
+
+        if ($playing->isEmpty() || $playing->first()->updated_at->addDays(2) <= Carbon::now())
+        {
+            $playing = $this->updatePlaying($order);
+        }
+
+        return $playing;
     }
 
     /**
      * Fetches title with relations by id.
-     * 
+     *
      * @param  Illuminate\Database\Eloquent\Builder $query
      * @param  Int $id
      * @return collection
@@ -225,7 +172,7 @@ class Title extends Eloquent
 
     /**
      * Fetches latest title.
-     * 
+     *
      * @param  Illuminate\Database\Eloquent\Builder $query
      * @param  Int $id
      * @return collection
@@ -233,18 +180,18 @@ class Title extends Eloquent
     public function scopeLatest($query)
     {
         return $query->where('poster', '>', 0)
-                     ->where('fully_scraped', '=', 1)
-                     ->where('release_date', '<', Carbon::now()->toDateString())
-                     ->orderBy('year', 'desc')
-                     ->limit(1)
-                     ->with('Review')
-                     ->first();
+            ->where('fully_scraped', '=', 1)
+            ->where('release_date', '<', Carbon::now()->toDateString())
+            ->orderBy('year', 'desc')
+            ->limit(1)
+            ->with('Review')
+            ->first();
     }
 
 
     /**
      * Performs like query by user specified search term.
-     * 
+     *
      * @param  Illuminate\Database\Eloquent\Builder $query
      * @param  string $q
      * @return collection
@@ -252,15 +199,15 @@ class Title extends Eloquent
     public function scopeSearch($query, $q)
     {
         return $query->where('title', 'LIKE', $q)
-                     ->select('id', 'imdb_id', 'tmdb_id', 'title', 'poster', 'type')
-                     ->groupBy('title')
-                     ->orderBy(Helpers::getOrdering(), 'desc')
-                     ->get();
+            ->select('id', 'imdb_id', 'tmdb_id', 'title', 'poster', 'type')
+            ->groupBy('title')
+            ->orderBy(Helpers::getOrdering(), 'desc')
+            ->get();
     }
 
-     /**
+    /**
      * Fetches all titles matching $id.
-     * 
+     *
      * @param  Illuminate\Database\Eloquent\Builder $query
      * @param  Int $id
      * @return collection
@@ -272,13 +219,13 @@ class Title extends Eloquent
             return $query->where('temp_id', '=', $id)->orderBy($order, 'desc')->get();
         }
 
-        return $query->where('temp_id', '=', $id)->get();      
+        return $query->where('temp_id', '=', $id)->get();
     }
-  
+
     /**
      * Fetches all information about series.
-     * 
-     * @param  Illuminate\Database\Eloquent\Builder $query 
+     *
+     * @param  Illuminate\Database\Eloquent\Builder $query
      * @return collection
      */
     public function scopeSeries($query, $id)
@@ -288,8 +235,8 @@ class Title extends Eloquent
 
     /**
      * Fetches all upcoming titles.
-     * 
-     * @param  Illuminate\Database\Eloquent\Builder $query 
+     *
+     * @param  Illuminate\Database\Eloquent\Builder $query
      * @return collection
      */
     public function scopeUpcoming($query)
@@ -299,33 +246,33 @@ class Title extends Eloquent
 
     /**
      * Returns paginated titles for movie page index.
-     * 
-     * @param  Illuminate\Database\Eloquent\Builder $query 
+     *
+     * @param  Illuminate\Database\Eloquent\Builder $query
      * @return collection
      */
     public function scopeMovieIndex($query, $perPage = 36)
     {
         return $query->where('type', '=', 'movie')
-                     ->orderBy(Helpers::getOrdering(), 'desc')
-                     ->paginate($perPage);
+            ->orderBy(Helpers::getOrdering(), 'desc')
+            ->paginate($perPage);
     }
 
-     /**
+    /**
      * Returns paginated titles for series page index.
-     * 
-     * @param  Illuminate\Database\Eloquent\Builder $query 
+     *
+     * @param  Illuminate\Database\Eloquent\Builder $query
      * @return collection
      */
     public function scopeSeriesIndex($query, $perPage = 36)
     {
         return $query->where('type', '=', 'series')
-                     ->orderBy(Helpers::getOrdering(), 'desc')
-                     ->paginate($perPage);
+            ->orderBy(Helpers::getOrdering(), 'desc')
+            ->paginate($perPage);
     }
 
     /**
      * Updates featured movies from external sources.
-     * 
+     *
      * @return Collection
      */
     public function updateFeatured()
@@ -334,15 +281,13 @@ class Title extends Eloquent
         $s->featured();
 
         $fet = $this->where('featured', 1)->limit(8)->orderBy('created_at', 'asc')->get();
-        
-        $this->cache->put('featured', md5('fet'), $fet);
 
         return $fet;
     }
 
     /**
      * Updates featured movies from external sources.
-     * 
+     *
      * @return Collection
      */
     public function updatePlaying($order = 'created_at')
@@ -351,15 +296,13 @@ class Title extends Eloquent
         $s->updateNowPlaying();
 
         $playing = $this->where('now_playing', 1)->limit(10)->orderBy($order, 'desc')->get();
-        
-        $this->cache->put('playing', md5('playing'), $playing);
 
         return $playing;
     }
 
     /**
      * Updates titles information from tmdb or imdb.
-     * 
+     *
      * @return void
      */
     public function updateFromExternal()

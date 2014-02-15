@@ -132,7 +132,7 @@ return array(
 		'Lib\Services\Cache\CacheInvalidationServiceProvider',
 		'Lib\Repository\ActorData\ActorDataServiceProvider',
 		'Frozennode\Administrator\AdministratorServiceProvider',
-
+        'Lib\Kakkak\Repository\Title\TitleServiceProvider',
 
 	),
 

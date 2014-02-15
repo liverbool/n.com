@@ -4,9 +4,9 @@ use carbon\Carbon;
 
 class News extends Eloquent
 {
-	/**
+    /**
      * Cacher instance.
-     * 
+     *
      * @var Lib\Services\Cache\Cacher
      */
     private $cache;
@@ -19,8 +19,8 @@ class News extends Eloquent
 
     /**
      * Returns 8 latest news items.
-     * 
-     * @param  Illuminate\Database\Eloquent\Builder $query 
+     *
+     * @param  Illuminate\Database\Eloquent\Builder $query
      * @return collection
      */
     public function scopeNews($query)
@@ -28,13 +28,11 @@ class News extends Eloquent
         $news = $query->limit(11)->orderBy('created_at', 'desc')->get();
 
         $options = App::make('Options');
-        if ($options->getDataProvider() == 'db')
+        if ($options->getDataProvider() == 'db' || ! $options->autoUpdateData())
         {
             return $news;
         }
 
-        //check if it has been a day since last news update,
-        //if so then update news now
         if ($news->isEmpty() || $news->first()->created_at->addHours(8) <= Carbon::now())
         {
             $news = $this->updateNews();
@@ -45,8 +43,8 @@ class News extends Eloquent
 
     /**
      * Returns all news items paginated.
-     * 
-     * @param  Illuminate\Database\Eloquent\Builder $query 
+     *
+     * @param  Illuminate\Database\Eloquent\Builder $query
      * @return collection
      */
     public function scopeNewsIndex($query)
@@ -56,7 +54,7 @@ class News extends Eloquent
 
     /**
      * Fetches 1 latest news item.
-     * 
+     *
      * @param  $query
      * @return News
      */
@@ -67,7 +65,7 @@ class News extends Eloquent
 
     /**
      * Updates news from external sources.
-     * 
+     *
      * @return Collection
      */
     public function updateNews()
@@ -76,8 +74,6 @@ class News extends Eloquent
         $s->updateNews();
 
         $news = $this->limit(11)->orderBy('created_at', 'desc')->get();
-
-        $this->cache->put('news', md5('news'), $news);
 
         return $news;
     }

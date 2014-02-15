@@ -40,9 +40,67 @@
 
                 @endif
 
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a href="{{ url(Str::slug(trans('main.movies'))) }}"><i class="ion-social-youtube-outline"></i> {{ trans('main.movies') }}</a></li>
-                    <li><a href="{{ url(Str::slug(trans('main.series'))) }}"><i class="ion-android-playstore"></i> {{ trans('main.series') }}</a></li>
+                <ul class="nav navbar-nav navbar-right navbar-menu">
+                    <li class="dropdown">
+                        <a href="{{ url(Str::slug(trans('main.movies'))) }}"><i class="ion-social-youtube-outline"></i> {{ trans('main.movies') }}</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.Movie Inter') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.Movie Thai') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.Movie Korea') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.Movie Japan') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.Movie Hong kong') }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="{{ url(Str::slug(trans('main.series'))) }}"><i class="ion-android-playstore"></i> {{ trans('main.series') }}</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.Series Inter') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.Series Thai') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.Series Korea') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.Series Japan') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.Series Hong kong') }}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a href="{{ url('adult') }}"><i class="ion-social-youtube"></i> {{ trans('main.adult') }}</a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.AV Inter') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.AV Thai') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.AV Japan') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.AV Asia') }}</a>
+                            </li>
+                            <li role="presentation">
+                                <a role="menuitem" tabindex="-1" href="#">{{  trans('main.AV Clip') }}</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li><a href="{{ url(Str::slug(trans('main.news'))) }}"><i class="ion-speakerphone"></i> {{ trans('main.news') }}</a></li>
                     <li><a href="{{ url(Str::slug(trans('main.people'))) }}"><i class="ion-android-social"></i> {{ trans('main.people') }}</a></li>
 

@@ -1,0 +1,61 @@
+.user-profile #img-bg {
+    @include background-size(cover);
+    text-align: center
+}
+
+.user-profile #img-contents {
+    margin: 40px;
+    display: inline-block
+}
+
+.user-profile #under-image-cont {
+    padding: 8px;
+    background-color: #f8f8f8;
+}
+
+.user-profile .stats {
+    margin-left: 10px;
+    margin-right: 10px;
+    display: inline-block;
+    text-align: center
+}
+
+.user-profile .stats span {
+    display: inline-block
+}
+
+.user-profile .grey-out {
+    color: #A5A5A5;
+    font-size: 13px;
+    text-transform: uppercase
+}
+
+.user-profile #under-image-wrapper {
+    text-align: center
+}
+
+.user-profile h1 {
+    font-size: 40px;
+    text-shadow: 1px 1px 1px #000;
+    color: #ffffff;
+}
+
+.user-profile .lists-wrapper {
+    overflow: hidden;
+    background-color: #f8f8f8;
+
+    margin-bottom: 20px;
+    padding: 15px;
+}
+
+.user-profile .pagination {
+    margin-left: 5px
+}
+
+.user-profile .reviews {
+    padding: 30px 30px 0px 30px
+}
+
+.user-profile .review-info strong {
+    padding-left: 10px
+}

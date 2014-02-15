@@ -1,0 +1,95 @@
+.breadcrumb-arrow {
+    margin: 0;
+    background: #fff;
+
+    li a {
+        height: 36px;
+        border-color: $color-bg-active;
+        background-color: $color-bg-active;
+        color: $color-bg-active-font;
+
+        &:before {
+            border-left-color: $color-bg-active;
+        }
+
+        &:after {
+            border-left-color: $color-bg-active;
+        }
+
+        &:hover:before,
+        &:hover:after {
+            border-left-color: $color-bg-active-hover;
+        }
+        &:hover {
+            border-color: $color-bg-active-hover;
+            background-color: $color-bg-active-hover;
+        }
+
+        &:active:before,
+        &:active:after {
+            border-left-color: $color-bg-active-active;
+        }
+        &:active {
+            border-color: $color-bg-active-active;
+            background-color: $color-bg-active-active;
+        }
+
+        &:focus:before,
+        &:focus:after {
+            border-left-color: $color-bg-active-focus;
+        }
+        &:focus {
+            border-color: $color-bg-active-focus;
+            background-color: $color-bg-active-focus;
+        }
+    }
+}
+
+.breadcrumb {
+    position: relative;
+
+    .breadcrumb-tools {
+        position: absolute;
+        right: 0;
+        padding: 3px 5px 3px 10px;
+
+        a {
+            &:before, &:after {
+                border: none;
+            }
+        }
+
+        .btn {
+            padding: 4px 12px;
+            height: 30px;
+            line-height: 20px;
+
+            /*&.btn-inverse {
+                border-color: #34495e;
+                background-color: #34495e;
+                color: #fff;
+
+                &:hover, &:focus, &:active {
+                    border-color: #263544;
+                    background-color: #263544;
+                    color: #fff;
+                }
+            }*/
+        }
+    }
+}
+
+.pagination>li>a,
+.pagination>li>span {
+    color: $color-a;
+}
+
+.pagination .active a,
+.pagination .active span,
+.pagination .active a:hover,
+.pagination .active span:hover,
+.pagination .active a:focus,
+.pagination .active span:focus {
+    background-color: $color-bg-active;
+    border-color: $color-bg-active;
+}

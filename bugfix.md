@@ -11,7 +11,7 @@ Fix bugs Kakkak!
 
 ### 3. Change nangkakkak.com-empty.png to:
     - L: 22 app/models/Actor.php
-    - L: 50 app/models/Title.php
+    - L: 50 app/models/Title.php return 'assets/images/nangkakkak.com-empty.png';
     - L: 14 app/views/Titles/Themes/Tabs/Similar.blade.php
     - L: 30 app/views/Users/Profile.blade.php
 
@@ -41,6 +41,14 @@ Fix bugs Kakkak!
 
 ### 5. Change lib/Helpers.php
     - Add $slug = true to Helpers::url parameter to make choise to slug & trans or not
-      - Line: 407 add param $slug
-      - Line: 376 add $user = null to profileUrl param
-      - Line: 380 set Helpers::profileUrl to slug false
+      - Line: 2 add namespace Lib;
+      - create Kakkak\Helpers.php
+      - add kakkak helpers to class map
+      - modifile all static class to \Class eg. \App::xx in Helpers.php
+
+### 6. Add libraries
+    - app/config/app/providers
+        - 'Lib\Kakkak\Repository\Title\TitleServiceProvider',
+
+### 7. Modify repository
+    - L: 184 Lib\Repository\Title\DbTitle.php (method titleIndex) set paging = 20

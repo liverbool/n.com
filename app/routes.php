@@ -17,7 +17,8 @@ Route::get('typeahead/{query}', array('uses' => 'SearchController@typeAhead', 'a
 Route::get('typeahead-actor/{query}', array('uses' => 'SearchController@castTypeAhead', 'as'   => 'typeahead-cast'));
 
 //homepage and footer
-Route::get('/', array('uses' => 'HomeController@index', 'as' => 'home'));
+///Route::get('/', array('uses' => 'HomeController@index', 'as' => 'home'));
+Route::get('/', array('uses' => 'KK\Controller\Home@index', 'as' => 'home'));
 Route::get('privacy', array('uses' => 'HomeController@privacy', 'as' => 'privacy'));
 Route::get('tos', array('uses' => 'HomeController@tos', 'as' => 'tos'));
 Route::get('contact', array('uses' => 'HomeController@contact', 'as' => 'contact'));

@@ -6,419 +6,419 @@ use Lib\Repository\User\UserRepositoryInterface as Repo;
 
 class UserController extends \BaseController {
 
-	/**
-	 * User validator instance.
-	 * 
-	 * @var Lib\Services\Validation\UserValidator
-	 */
-	private $registerValidator;
+    /**
+     * User validator instance.
+     *
+     * @var Lib\Services\Validation\UserValidator
+     */
+    private $registerValidator;
 
-	/**
-	 * User repository instance.
-	 * 
-	 * @var Lib\Repository\User\UserRepositoryInterface
-	 */
-	private $user;
+    /**
+     * User repository instance.
+     *
+     * @var Lib\Repository\User\UserRepositoryInterface
+     */
+    private $user;
 
-	/**
-	 * Options instance.
-	 * 
-	 * @var Lib\Services\Options\Options
-	 */
-	private $options;
+    /**
+     * Options instance.
+     *
+     * @var Lib\Services\Options\Options
+     */
+    private $options;
 
-	/**
-	 * Apply filters and innstantiate dependencies.
-	 */
-	public function __construct(UserValidator $validator, Repo $user)
-	{
-		$this->beforeFilter('csrf', array('on' => 'post'));
-		$this->beforeFilter('is.admin', array('only' => array('ban', 'destroy', 'unban', 'assignToGroup')));
-		$this->beforeFilter('is.user', array('only' => array('edit', 'changePassword')));
-		
-		$this->user = $user;
-		$this->validator = $validator;
+    /**
+     * Apply filters and innstantiate dependencies.
+     */
+    public function __construct(UserValidator $validator, Repo $user)
+    {
+        $this->beforeFilter('csrf', array('on' => 'post'));
+        $this->beforeFilter('is.admin', array('only' => array('ban', 'destroy', 'unban', 'assignToGroup')));
+        $this->beforeFilter('is.user', array('only' => array('edit', 'changePassword')));
 
-		$this->options = App::make('Options');
-	}
+        $this->user = $user;
+        $this->validator = $validator;
 
-	/**
-	 * Displays registration view.
-	 *
-	 * @return View.
-	 */
-	public function create()
-	{
-		return View::make('Users.Register');		
-	}
+        $this->options = App::make('Options');
+    }
 
-	/**
-	 * Stores new user in database.
-	 *
-	 * @return View.
-	 */
-	public function store()
-	{
-		$input = Input::except('_method', '_token');
-		
-		if ( ! $this->validator->with($input)->passes())
-		{
-			return Redirect::to('register')->withErrors($this->validator->errors())->withInput($input);
-		}
+    /**
+     * Displays registration view.
+     *
+     * @return View.
+     */
+    public function create()
+    {
+        return View::make('Users.Register');
+    }
 
-		if ($this->options->requireUserActivation())
-		{
-			$this->user->register($input);
-		    
-			return Redirect::to('register')->withSuccess( trans('users.registered successfully') );
-		}
-		
-		$this->user->register($input, true);
-		    
-		return Redirect::to('register')->withSuccess( trans('users.registered successfully no act') );
-	}
+    /**
+     * Stores new user in database.
+     *
+     * @return View.
+     */
+    public function store()
+    {
+        $input = Input::except('_method', '_token');
 
-	/**
-	 * Activates provided user.
-	 *
-	 * @param  string $id user id
-	 * @param  string $code activation code
-	 * 
-	 * @return void
-	 */
-	public function activate($id, $code)
-	{
-		try
-		{
-			$this->user->activate( e($id), e($code) );
-		}
-		catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
-		{
-			return Redirect::to('/')->withInfo( trans('users.not found or already activated') );
-		}
-		catch (Cartalyst\Sentry\Users\UserAlreadyActivatedException $e)
-		{
-			return Redirect::to('/')->withInfo( trans('users.not found or already activated') );
-		}
+        if ( ! $this->validator->with($input)->passes())
+        {
+            return Redirect::back()->withErrors($this->validator->errors())->withInput($input);
+        }
 
-		return Redirect::to('/')->withSuccess( trans('users.activated successfully') );
-	}
+        if ($this->options->requireUserActivation())
+        {
+            $this->user->register($input);
 
-	/**
-	 * Shows specified users profile.
-	 *
-	 * @param  int  $id
-	 * @return View.
-	 */
-	public function show($name)
-	{		
-		$data = $this->user->prepareProfile('watchlist', $name, Input::all());
+            return Redirect::back()->withSuccess( trans('users.registered successfully') );
+        }
 
-		return View::make('Users.Profile')->withUser($data['user'])
-		                                  ->withWatchlist($data['watchlist'])
-		                                  ->withFavorite($data['favorite'])
-		                                  ->withReviews($data['reviews'])
-		                                  ->with('revCount', $data['revCount'])
-		                                  ->with('favCount', $data['favCount'])
-		                                  ->with('watCount', $data['watCount']);
-	}
+        $this->user->register($input, true);
 
-	/**
-	 * Show the form for editing user information.
-	 *
-	 * @param  string $username
-	 * @return View
-	 */
-	public function edit($name)
-	{
-		$user = $this->user->byUri($name);
+        return Redirect::back()->withSuccess( trans('users.registered successfully no act') );
+    }
 
-		return View::make('Users.Edit')->withUser($user);
-	}
+    /**
+     * Activates provided user.
+     *
+     * @param  string $id user id
+     * @param  string $code activation code
+     *
+     * @return void
+     */
+    public function activate($id, $code)
+    {
+        try
+        {
+            $this->user->activate( e($id), e($code) );
+        }
+        catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+        {
+            return Redirect::to('/')->withInfo( trans('users.not found or already activated') );
+        }
+        catch (Cartalyst\Sentry\Users\UserAlreadyActivatedException $e)
+        {
+            return Redirect::to('/')->withInfo( trans('users.not found or already activated') );
+        }
 
-	/**
-	 * Uploads and associates user avatar.
-	 * 
-	 * @param  string $username
-	 * @return void
-	 */
-	public function avatar($username)
-	{
-		$input = array('avatar' => Input::file('avatar'));
+        return Redirect::to('/')->withSuccess( trans('users.activated successfully') );
+    }
 
-		if ( ! $this->validator->setRules('avatar')->with($input)->passes())
-		{
-			return Redirect::back()->withErrors($this->validator->errors());
-		}
+    /**
+     * Shows specified users profile.
+     *
+     * @param  int  $id
+     * @return View.
+     */
+    public function show($name)
+    {
+        $data = $this->user->prepareProfile('watchlist', $name, Input::all());
 
-		$this->user->uploadAvatar($input, $username);
+        return View::make('Users.Profile')->withUser($data['user'])
+            ->withWatchlist($data['watchlist'])
+            ->withFavorite($data['favorite'])
+            ->withReviews($data['reviews'])
+            ->with('revCount', $data['revCount'])
+            ->with('favCount', $data['favCount'])
+            ->with('watCount', $data['watCount']);
+    }
 
-		return Redirect::back()->withSuccess( trans('users.uploaded avatar success') );
-	}
+    /**
+     * Show the form for editing user information.
+     *
+     * @param  string $username
+     * @return View
+     */
+    public function edit($name)
+    {
+        $user = $this->user->byUri($name);
 
-	/**
-	 * Uploads and associates user profile background.
-	 * 
-	 * @param  string $id
-	 * @return void
-	 */
-	public function background($id)
-	{
-		$input = array('bg' => Input::file('bg'));
+        return View::make('Users.Edit')->withUser($user);
+    }
 
-		if ( ! $this->validator->setRules('background')->with($input)->passes())
-		{
-			return Redirect::back()->withErrors($this->validator->errors());
-		}
+    /**
+     * Uploads and associates user avatar.
+     *
+     * @param  string $username
+     * @return void
+     */
+    public function avatar($username)
+    {
+        $input = array('avatar' => Input::file('avatar'));
 
-		$this->user->uploadBg($input, $id);
+        if ( ! $this->validator->setRules('avatar')->with($input)->passes())
+        {
+            return Redirect::back()->withErrors($this->validator->errors());
+        }
 
-		return Redirect::back()->withSuccess( trans('users.uploaded avatar success') );
-	}
+        $this->user->uploadAvatar($input, $username);
 
-	/**
-	 * Update users general information.
-	 *
-	 * @param  string  $username
-	 * @return Redirect
-	 */
-	public function update($username)
-	{
-		$user = $this->user->byUsername($username);
-		
-		$input = Input::except('_method', '_token');
+        return Redirect::back()->withSuccess( trans('users.uploaded avatar success') );
+    }
 
-		if ( ! $this->validator->setRules('editInfo')->with($input)->passes())
-		{
-			return Redirect::back()->withErrors($this->validator->errors());	
-		}
+    /**
+     * Uploads and associates user profile background.
+     *
+     * @param  string $id
+     * @return void
+     */
+    public function background($id)
+    {
+        $input = array('bg' => Input::file('bg'));
 
-		$this->user->update($user, $input);
+        if ( ! $this->validator->setRules('background')->with($input)->passes())
+        {
+            return Redirect::back()->withErrors($this->validator->errors());
+        }
 
-		return Redirect::to(Helpers::url($user->username, $user->id, 'users'))->withSuccess( trans('users.update success') );
-	}
+        $this->user->uploadBg($input, $id);
 
-	/**
-	 * Displays a page for changing password.
-	 * 
-	 * @param  string $username
-	 * @return View
-	 */
-	public function changePassword($username)
-	{
-		$user = $this->user->byUri($username);
-		
-		return View::make('Users.ChangePassword')->withUser($user);
-	}
+        return Redirect::back()->withSuccess( trans('users.uploaded avatar success') );
+    }
 
-	/**
-	 * Stores new user password in database.
-	 * 
-	 * @param  string $username
-	 * @return void
-	 */
-	public function storeNewPass($username)
-	{
-		$user = Sentry::findUserByLogin($username);
+    /**
+     * Update users general information.
+     *
+     * @param  string  $username
+     * @return Redirect
+     */
+    public function update($username)
+    {
+        $user = $this->user->byUsername($username);
 
-		$input = Input::except('_token');
+        $input = Input::except('_method', '_token');
 
-		$this->validator->rules = array(
-			'new_password' => 'required|confirmed|min:5|max:30',
-			'old_password' => 'required|min:5|max:30');
+        if ( ! $this->validator->setRules('editInfo')->with($input)->passes())
+        {
+            return Redirect::back()->withErrors($this->validator->errors());
+        }
 
-		if ( ! $this->validator->with($input)->passes())
-		{
-			return Redirect::back()->withErrors($this->validator->errors());
-		}
+        $this->user->update($user, $input);
 
-		if ( ! $user->checkPassword( $input['old_password']) )
-		{
-			return Redirect::back()->withErrors(array('old_password' => trans('users.password didnt match')));
-		}
+        return Redirect::to(Helpers::url($user->username, $user->id, 'users'))->withSuccess( trans('users.update success') );
+    }
 
-		$this->user->changePassword($input, $username);
+    /**
+     * Displays a page for changing password.
+     *
+     * @param  string $username
+     * @return View
+     */
+    public function changePassword($username)
+    {
+        $user = $this->user->byUri($username);
 
-		return Redirect::to("users/$username")->withSuccess( trans('users.changed pass success') );
-	}
+        return View::make('Users.ChangePassword')->withUser($user);
+    }
 
-	/**
-	 * Deletes user and related records from database.
-	 *
-	 * @param  int  $id
-	 * @return Redirect
-	 */
-	public function destroy($username)
-	{
-		if (Sentry::getUser()->username == $username)
-		{
-			return Redirect::back()->withFailure( trans('users.can\'t delete account you\'re logged in with') );
-		}
+    /**
+     * Stores new user password in database.
+     *
+     * @param  string $username
+     * @return void
+     */
+    public function storeNewPass($username)
+    {
+        $user = Sentry::findUserByLogin($username);
 
-		try
-		{	    
-		    $this->user->delete($username);		   
-		}
-		catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
-		{
-		    return Redirect::back()->withFailure( trans('users.user not found') );
-		}
+        $input = Input::except('_token');
 
-		return Redirect::back()->withSuccess( trans('users.user deleted successfully') );
-	}
+        $this->validator->rules = array(
+            'new_password' => 'required|confirmed|min:5|max:30',
+            'old_password' => 'required|min:5|max:30');
 
-	/**
-	 * Bans the specified user.
-	 * 
-	 * @param  string $id
-	 * @return Redirect
-	 */
-	public function ban($id)
-	{
-		if ($this->user->ban( e($id) ))
-		{
-			return Redirect::back()->withSuccess( trans('users.banned successfully', array('id' => $id)) );
-		}
-		else
-		{
-			return Redirect::back()->withFailure( trans('users.ban failed', array('id' => $id)) );
-		}	
-	}
+        if ( ! $this->validator->with($input)->passes())
+        {
+            return Redirect::back()->withErrors($this->validator->errors());
+        }
 
-	/**
-	 * Unbans the specified user.
-	 * 
-	 * @param  string $id username
-	 * @return redirect with response
-	 */
-	public function unban($login)
-	{
-		$this->user->unban( e($login) );
+        if ( ! $user->checkPassword( $input['old_password']) )
+        {
+            return Redirect::back()->withErrors(array('old_password' => trans('users.password didnt match')));
+        }
 
-		return Redirect::back()->withSuccess( trans('users.unbanned successfully', array('id' => $login)) );
-	}
+        $this->user->changePassword($input, $username);
 
-	/**
-	 * Assigns specified group to the specified user.
-	 * 
-	 * @param  string $login
-	 * @return Redirect
-	 */
-	public function assignToGroup($login)
-	{
-		$input = Input::except('_token');
+        return Redirect::to('/')->withSuccess( trans('users.changed pass success') );
+    }
 
-		$this->user->assignGroup($input, e($login));
+    /**
+     * Deletes user and related records from database.
+     *
+     * @param  int  $id
+     * @return Redirect
+     */
+    public function destroy($username)
+    {
+        if (Sentry::getUser()->username == $username)
+        {
+            return Redirect::back()->withFailure( trans('users.can\'t delete account you\'re logged in with') );
+        }
 
-		return Redirect::back()->withSuccess( trans('users.group assigned') );
-	}
+        try
+        {
+            $this->user->delete($username);
+        }
+        catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+        {
+            return Redirect::back()->withFailure( trans('users.user not found') );
+        }
 
-	/**
-	 * Displays view for requesting a password reset.
-	 * 
-	 * @return Redirect/View
-	 */
-	public function requestPassReset()
-	{
-		if (Sentry::check())
-		{
-			return Redirect::to('/')->withInfo( trans('users.already logged in') );
-		}
+        return Redirect::back()->withSuccess( trans('users.user deleted successfully') );
+    }
 
-		return View::make('Users.ResetPassword');
-	}
+    /**
+     * Bans the specified user.
+     *
+     * @param  string $id
+     * @return Redirect
+     */
+    public function ban($id)
+    {
+        if ($this->user->ban( e($id) ))
+        {
+            return Redirect::back()->withSuccess( trans('users.banned successfully', array('id' => $id)) );
+        }
+        else
+        {
+            return Redirect::back()->withFailure( trans('users.ban failed', array('id' => $id)) );
+        }
+    }
 
-	/**
-	 * Sends passowrd reset email.
-	 * 
-	 * @return Redirect
-	 */
-	public function sendPasswordReset()
-	{
-		$input = Input::except('_token');
+    /**
+     * Unbans the specified user.
+     *
+     * @param  string $id username
+     * @return redirect with response
+     */
+    public function unban($login)
+    {
+        $this->user->unban( e($login) );
 
-		$this->validator->rules = array('email' => 'required|email|max:40|exists:users,email');
+        return Redirect::back()->withSuccess( trans('users.unbanned successfully', array('id' => $login)) );
+    }
 
-		if ( ! $this->validator->with($input)->passes())
-		{
-			return Redirect::back()->withErrors($this->validator->errors())->withInput($input);
-		}
-		 
-		$this->user->sendPassReset($input);
+    /**
+     * Assigns specified group to the specified user.
+     *
+     * @param  string $login
+     * @return Redirect
+     */
+    public function assignToGroup($login)
+    {
+        $input = Input::except('_token');
 
-		return Redirect::to('/')->withSuccess( trans('users.reset email sent') );
-	}
+        $this->user->assignGroup($input, e($login));
 
-	/**
-	 * Display user favorite titles page.
-	 * 
-	 * @param  string $name
-	 * @return View
-	 */
-	public function showFavorites($name)
-	{
-		$data = $this->user->prepareProfile('favorite', $name, Input::all());
+        return Redirect::back()->withSuccess( trans('users.group assigned') );
+    }
 
-		return View::make('Users.Profile')->withUser($data['user'])
-		                                  ->withWatchlist($data['watchlist'])
-		                                  ->withFavorite($data['favorite'])
-		                                  ->withReviews($data['reviews'])
-		                                  ->with('revCount', $data['revCount'])
-		                                  ->with('favCount', $data['favCount'])
-		                                  ->with('watCount', $data['watCount']);
-	}
+    /**
+     * Displays view for requesting a password reset.
+     *
+     * @return Redirect/View
+     */
+    public function requestPassReset()
+    {
+        if (Sentry::check())
+        {
+            return Redirect::to('/')->withInfo( trans('users.already logged in') );
+        }
 
-	/**
-	 * Display user review page.
-	 * 
-	 * @param  string $name
-	 * @return View
-	 */
-	public function showReviews($name)
-	{
-		$data = $this->user->prepareProfile('favorite', $name, Input::all());
+        return View::make('Users.ResetPassword');
+    }
 
-		return View::make('Users.Reviews')->withUser($data['user'])
-		                                  ->withWatchlist($data['watchlist'])
-		                                  ->withFavorite($data['favorite'])
-		                                  ->withReviews($data['reviews'])
-		                                  ->with('revCount', $data['revCount'])
-		                                  ->with('favCount', $data['favCount'])
-		                                  ->with('watCount', $data['watCount']);
-	}
+    /**
+     * Sends passowrd reset email.
+     *
+     * @return Redirect
+     */
+    public function sendPasswordReset()
+    {
+        $input = Input::except('_token');
 
-	/**
-	 * Resets user password.
-	 * 
-	 * @param  string $code
-	 * @return Redirect
-	 */
-	public function resetPassword($code)
-	{
-		$new = str_random(20);
+        $this->validator->rules = array('email' => 'required|email|max:40|exists:users,email');
 
-		try
-		{
-			$user = Sentry::findUserByResetPasswordCode( e($code) );
-		}
-		catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
-		{
-		   return Redirect::to('/')->withFailure( trans('users.invalid reset code') );
-		}
+        if ( ! $this->validator->with($input)->passes())
+        {
+            return Redirect::back()->withErrors($this->validator->errors())->withInput($input);
+        }
 
-		if ( $this->user->resetPassword($user, e($code), $new))
-		{
-			$data = array('username' => $user->username, 'email' => $user->email, 'password' => $new);
+        $this->user->sendPassReset($input);
 
-			$this->user->sendNewPassword($data);
-			
-			return Redirect::to('/')->withSuccess( trans('users.pass reset success') );
+        return Redirect::to('/')->withSuccess( trans('users.reset email sent') );
+    }
 
-			Event::fire('User.PasswordReset', array($user->username, Carbon::now()));
-		}
+    /**
+     * Display user favorite titles page.
+     *
+     * @param  string $name
+     * @return View
+     */
+    public function showFavorites($name)
+    {
+        $data = $this->user->prepareProfile('favorite', $name, Input::all());
 
-		return Redirect::to('/')->withFailure( trans('users.pass reset failure') );
-	}
+        return View::make('Users.Profile')->withUser($data['user'])
+            ->withWatchlist($data['watchlist'])
+            ->withFavorite($data['favorite'])
+            ->withReviews($data['reviews'])
+            ->with('revCount', $data['revCount'])
+            ->with('favCount', $data['favCount'])
+            ->with('watCount', $data['watCount']);
+    }
+
+    /**
+     * Display user review page.
+     *
+     * @param  string $name
+     * @return View
+     */
+    public function showReviews($name)
+    {
+        $data = $this->user->prepareProfile('favorite', $name, Input::all());
+
+        return View::make('Users.Reviews')->withUser($data['user'])
+            ->withWatchlist($data['watchlist'])
+            ->withFavorite($data['favorite'])
+            ->withReviews($data['reviews'])
+            ->with('revCount', $data['revCount'])
+            ->with('favCount', $data['favCount'])
+            ->with('watCount', $data['watCount']);
+    }
+
+    /**
+     * Resets user password.
+     *
+     * @param  string $code
+     * @return Redirect
+     */
+    public function resetPassword($code)
+    {
+        $new = str_random(20);
+
+        try
+        {
+            $user = Sentry::findUserByResetPasswordCode( e($code) );
+        }
+        catch (Cartalyst\Sentry\Users\UserNotFoundException $e)
+        {
+            return Redirect::to('/')->withFailure( trans('users.invalid reset code') );
+        }
+
+        if ( $this->user->resetPassword($user, e($code), $new))
+        {
+            $data = array('username' => $user->username, 'email' => $user->email, 'password' => $new);
+
+            $this->user->sendNewPassword($data);
+
+            return Redirect::to('/')->withSuccess( trans('users.pass reset success') );
+
+            Event::fire('User.PasswordReset', array($user->username, Carbon::now()));
+        }
+
+        return Redirect::to('/')->withFailure( trans('users.pass reset failure') );
+    }
 
 
 }

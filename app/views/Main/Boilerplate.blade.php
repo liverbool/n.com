@@ -64,32 +64,32 @@
 @section('ads')
 
 @if($ad = $options->getFooterAd())
-
-<div class="row ads-row">{{ $ad }}</div>
-
+<div class="container">
+    <div class="row ads-row">{{ $ad }}</div>
+</div>
 @endif
 
 
 @show
 
 <footer>
-    <section class="col-sm-10 hidden-xs">
+    <div class="container">
+        <section class="col-sm-10 hidden-xs">
 
-    <div class="copyright"> {{ trans('main.copyright') }} <a class="brand" href="{{ url() }}">{{ trans('main.brand') }}</a>{{ Carbon\Carbon::now()->year }}</div>
+        <div class="copyright"> {{ trans('main.copyright') }} <a class="brand" href="{{ url() }}">{{ trans('main.brand') }}</a>{{ Carbon\Carbon::now()->year }}</div>
 
-    <div>
-        <a href="{{ url('privacy') }}">{{ trans('main.privacy') }}</a> |
-        <a href="{{ url('tos') }}">{{ trans('main.tos') }}</a> |
-        <a href="{{ url('contact') }}">{{ trans('main.contact') }}</a>
-    </div>
-    </section>
-    <div class="col-sm-2 home-social hidden-xs hidden-sm">
+        <div>
+            <a href="{{ url('privacy') }}">{{ trans('main.privacy') }}</a> |
+            <a href="{{ url('tos') }}">{{ trans('main.tos') }}</a> |
+            <a href="{{ url('contact') }}">{{ trans('main.contact') }}</a>
+        </div>
+        </section>
 
-        <div id="twitter" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-twitter'></i>"></div>
-        <div id="facebook" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-facebook'></i>"></div>
-        <div id="pinterest" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-pinterest'></i>"></div>
-        <div id="linkedin" data-url="{{ url() }}" data-text='{{ trans("main.meta description") }}' data-title="<i class='fa fa-linkedin'></i>"></div>
+        <section class="col-sm-2 home-social hidden-xs hidden-sm">
 
+            @include('Main.Socials')
+
+        </section>
     </div>
 </footer>
 {{ HTML::script('assets/js/library.js') }}

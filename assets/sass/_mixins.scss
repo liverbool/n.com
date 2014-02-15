@@ -1,0 +1,21 @@
+@import "compass";
+
+$color-a:           #16a085;
+$color-a-hover:     #1cbf9f;
+$color-a-focus:     #1cbf9f;
+$color-a-active:    #11826c;
+
+$color-a-nav:           #5f5f5f;
+$color-a-nav-hover:     #16a085;
+$color-a-nav-focus:     #16a085;
+$color-a-nav-active:    #5f5f5f;
+
+$color-bg-active:           $color-a;
+$color-bg-active-hover:     $color-a-hover;
+$color-bg-active-active:    $color-a-active;
+$color-bg-active-focus:     $color-a-focus;
+$color-bg-active-font:      #ffffff;
+
+@function KK_URL_IMG($filePath) {
+  @return url('../images/' + $filePath);
+};

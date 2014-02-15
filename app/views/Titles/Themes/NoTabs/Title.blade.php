@@ -27,7 +27,12 @@
   @include('Titles.Themes.NoTabs.Jumbotron')
 
   <section class="container push-footer-wrapper">
-
+      <div class="row">
+      <ol class="breadcrumb breadcrumb-arrow">
+          <li><a href="{{ url('/') }}">{{ trans('main.home') }}</a></li>
+          <li class="active"><span>{{ trans('main.movies') }}</span></li>
+      </ol>
+      </div>
     <div class="yt-modal-box"></div> 
 
     <div class="row ads-row">

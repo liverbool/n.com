@@ -1,0 +1,139 @@
+#browse {
+    //@include background-image(radial-gradient(circle at center, rgba(112, 125, 161, 0.8),#0F1115),url("../images/joker.jpg"));
+    //background-repeat: no-repeat;
+    //background-attachment: fixed;
+
+    .pagination-bottom {
+        text-align: center;
+        clear: both;
+    }
+}
+
+.img-container {
+    @include box-shadow(0 0 0 5px rgba(0, 0, 0, 0.1));
+
+    .flip-back {
+        //@include box-shadow(0 0 0 5px rgba($color-bg-active, 0.8));
+        //@include background(linear-gradient(to bottom, #ffffff 0%,#f6f6f6 47%,#ededed 100%));
+        @include background-image(
+            radial-gradient(circle at center, rgba(255,255,255, .2) 80px,rgba(0, 0, 0, 0.3)),
+            KK_URL_IMG('nangkk-empty-bg.png')
+        );
+
+        background-repeat: no-repeat;
+        background-position: center center;
+
+        padding: 0;
+
+        h5 {
+            font-size: 15px;
+            padding: 10px;
+            margin: 0;
+            background: $color-bg-active;
+            color: $color-bg-active-font;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 rgba(0,0,0,.3);
+        }
+    }
+}
+
+.browse {
+
+    &.container {
+    }
+
+    .well {
+        @include border-radius(0);
+
+        margin: 0 0 20px;
+        border-left: none;
+        border-right: none;
+    }
+
+    .browse-grid {
+        margin-left: 15px;
+    }
+
+    .browse-col {
+        padding: 0;
+    }
+}
+
+.browse-grid {
+    list-style-type: none;
+    position: relative;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    min-height: 50px;
+
+    figure {
+        padding: 10px;
+    }
+
+    img {
+        height: 250px !important;
+        opacity: .95;
+        min-width: 100%;
+    }
+
+    .img-responsive {
+        margin: 0;
+        border-bottom: none;
+    }
+}
+
+.browse-grid figure.inactive {
+    visibility: hidden !important;
+    opacity: 0 !important
+}
+
+.browse-grid figcaption {
+    @include background(linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%));
+
+    padding: 2px 5px 6px 5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.browse-grid .action-buttons {
+    .btn {
+        float: left;
+        margin-right: 5px;
+    }
+
+    form {
+        display: inline-block;
+    }
+}
+
+.browse-grid .action-buttons {
+    margin: 3px 0 0 0;
+    padding: 0
+}
+
+.search-page .row.browse-grid {
+    margin-top: 30px
+}
+
+.cast-grid {
+    list-style-type: none;
+    position: relative;
+    margin: 0 -5px 0 0;
+    padding: 0;
+
+    figcaption {
+        padding: 2px 5px 6px 5px;
+        background: linear-gradient(to bottom, #ffffff 0%, #f0f0f0 100%);
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+}
+
+#grid2 figure, #grid figure, #grid3 figure {
+    @include transition(all .7s ease-out);
+    display: none;
+    cursor: pointer;
+}

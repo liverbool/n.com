@@ -1,111 +1,113 @@
 <?php
-
+namespace Lib;
 use Carbon\Carbon;
 
 class Helpers
 {
-	private static $provider;
+    private static $provider;
 
-	/**
-	 * Makes images thumb path from full sized image path.
-	 * 
-	 * @param  string $url
-	 * @return string
-	 */
-	public static function thumb($url)
-	{	
-		$path = asset(preg_replace('/imdb\/stills\/(.+?)\.jpg/', 'imdb/stills/$1.thumb.jpg', $url));
+    /**
+     * Makes images thumb path from full sized image path.
+     *
+     * @param  string $url
+     * @return string
+     */
+    public static function thumb($url)
+    {
+        if (str_contains($url, 'http')) return $url;
 
-		if (@getimagesize($path))
-		{
-			return $path;
-		}
-		
-		return asset($url);
-	}
+        $path = asset(preg_replace('/imdb\/stills\/(.+?)\.jpg/', 'imdb/stills/$1.thumb.jpg', $url));
 
-	/**
-	 * Sorts given collection by release date.
-	 * 
-	 * @param  Collection $col
-	 * @return Collection
-	 */
-	public static function sortByYear($col)
-	{
-		$col->sort(function($a, $b)
-    	{
-	        preg_match('/(\d{4})/', $a->release_date ? $a->release_date : $a->year, $m);
-	        $a = isset($m[0]) ? $m[0] : '';
-	        
-	        preg_match('/(\d{4})/', $b->release_date ? $b->release_date : $b->year, $m);
-	        $b = isset($m[0]) ? $m[0] : '';
+        if (@getimagesize($path))
+        {
+            return $path;
+        }
 
-	        if ($a === $b) {
-	            return 0;
-	        }
+        return asset($url);
+    }
 
-	        return ($a < $b) ? 1 : -1;
-   		});
+    /**
+     * Sorts given collection by release date.
+     *
+     * @param  Collection $col
+     * @return Collection
+     */
+    public static function sortByYear($col)
+    {
+        $col->sort(function($a, $b)
+            {
+                preg_match('/(\d{4})/', $a->release_date ? $a->release_date : $a->year, $m);
+                $a = isset($m[0]) ? $m[0] : '';
 
-   		return $col;
-	}
+                preg_match('/(\d{4})/', $b->release_date ? $b->release_date : $b->year, $m);
+                $b = isset($m[0]) ? $m[0] : '';
 
-	/**
-	 * Returns tmdb original size image url.
-	 * 
-	 * @param  string $url
-	 * @return string 
-	 */
-	public static function original($url)
-	{
-		return preg_replace('/\/w[0-9]+\//', '/original/', $url);
-	}
+                if ($a === $b) {
+                    return 0;
+                }
 
-	public static function getSimilar(Title $title)
-	{
-		$genres = explode($title->genre);
-	}
+                return ($a < $b) ? 1 : -1;
+            });
 
-	/**
-	 * Returns small version of user avatar path.
-	 * 
-	 * @return string
-	 */
-	public static function smallAvatar()
-	{
-		$user = self::loggedInUser();
+        return $col;
+    }
 
-		if ($user->avatar)
-		{
-			return asset(str_replace('.jpg', '.small.jpg', $user->avatar));
-		}
-		
-		return asset('assets/images/no_user_icon.png');		
-	}
+    /**
+     * Returns tmdb original size image url.
+     *
+     * @param  string $url
+     * @return string
+     */
+    public static function original($url)
+    {
+        return preg_replace('/\/w[0-9]+\//', '/original/', $url);
+    }
 
-	/**
-	 * Removes commas from imdb votes number and
-	 * casts to integer.
-	 * 
-	 * @param  string $num
-	 * @return int
-	 */
-	public static function imdbVotes($num)
-	{
-		$num = str_replace(',', '', (string) $num);
+    public static function getSimilar(Title $title)
+    {
+        $genres = explode($title->genre);
+    }
 
-    	return (int) $num;
-	}
+    /**
+     * Returns small version of user avatar path.
+     *
+     * @return string
+     */
+    public static function smallAvatar()
+    {
+        $user = self::loggedInUser();
 
-	/**
+        if ($user->avatar)
+        {
+            return asset(str_replace('.jpg', '.small.jpg', $user->avatar));
+        }
+
+        return asset('assets/images/no_user_icon.png');
+    }
+
+    /**
+     * Removes commas from imdb votes number and
+     * casts to integer.
+     *
+     * @param  string $num
+     * @return int
+     */
+    public static function imdbVotes($num)
+    {
+        $num = str_replace(',', '', (string) $num);
+
+        return (int) $num;
+    }
+
+    /**
      * Returns what to order titles on popularity wise.
-     * 
+     *
      * @return string
      */
     public static function getOrdering()
     {
-    	$opt = App::make('Options');
-    	$provider = $opt->getDataProvider();
+        $opt = \App::make('Options');
+        $provider = $opt->getDataProvider();
 
         if ($provider == 'imdb')
         {
@@ -121,371 +123,372 @@ class Helpers
         }
         else
         {
-        	$ordering = 'imdb_votes_num';
+            $ordering = 'imdb_votes_num';
         }
 
         return $ordering;
     }
 
-	/**
-	 * Compiles validator error messages into string.
-	 * 
-	 * @param  array $messages
-	 * @return string
-	 */
-	public static function compileErrorsForAjax($messages)
-	{
-		$response = '';
+    /**
+     * Compiles validator error messages into string.
+     *
+     * @param  array $messages
+     * @return string
+     */
+    public static function compileErrorsForAjax($messages)
+    {
+        $response = '';
 
-	    foreach ($messages as $message)
-	    {
-	        $response .= $message . '<br>';
-	    }
+        foreach ($messages as $message)
+        {
+            $response .= $message . '<br>';
+        }
 
-	    return $response;
-	}
+        return $response;
+    }
 
-	/**
-	 * Extracts specified season from eager loaded title.
-	 * 
-	 * @param  Title  $title
-	 * @param  string/int $num
-	 * @return Season
-	 */
-	public static function extractSeason(Title $title, $num)
-	{
-		foreach ($title->season as $k => $v)
-		{
-			if ($v->number == $num)
-			{
-				return $v;
-			}
-		}
-	}
+    /**
+     * Extracts specified season from eager loaded title.
+     *
+     * @param  Title  $title
+     * @param  string/int $num
+     * @return Season
+     */
+    public static function extractSeason(Title $title, $num)
+    {
+        foreach ($title->season as $k => $v)
+        {
+            if ($v->number == $num)
+            {
+                return $v;
+            }
+        }
+    }
 
     /**
      * Returns current data provider
-     * 
+     *
      * @return string
      */
     public static function getProvider()
-	{
-    	if ( ! self::$provider)
-    	{
-    		$opt = App::make('Options');
-    		self::$provider = $opt->getDataProvider();
-    	}
+    {
+        if ( ! self::$provider)
+        {
+            $opt = \App::make('Options');
+            self::$provider = $opt->getDataProvider();
+        }
 
-    	return self::$provider;
+        return self::$provider;
     }
 
-	/**
-	 * Checks if user has specific privilegies.
-	 * 
-	 * @param  string $for
-	 * @return boolean
-	 */
-	public static function hasAccess($for)
-	{
-		$user = self::loggedInUser();
+    /**
+     * Checks if user has specific privilegies.
+     *
+     * @param  string $for
+     * @return boolean
+     */
+    public static function hasAccess($for)
+    {
+        $user = self::loggedInUser();
 
-		if ($user && $user->hasAccess($for))
-		{
-			return true;
-		}
+        if ($user && $user->hasAccess($for))
+        {
+            return true;
+        }
 
-		return false;
-	}
+        return false;
+    }
 
-	/**
-	 * Checks if specified user is currently logged in user.
-	 * 
-	 * @param  string  $username
-	 * @return boolean
-	 */
-	public static function isUser($username = null)
-	{
-		$user = self::loggedInUser();
+    /**
+     * Checks if specified user is currently logged in user.
+     *
+     * @param  string  $username
+     * @return boolean
+     */
+    public static function isUser($username = null)
+    {
+        $user = self::loggedInUser();
 
-		if ( ! $user || $user->username !== $username)
-		{
-			return false;
-		}
+        if ( ! $user || $user->username !== $username)
+        {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
-	/**
-	 * Compile genres from db into a string acceptable
-	 * by javascript responsible for filtering titles.
-	 * 
-	 * @param  string $genres
-	 * @return string
-	 */
-	public static function genreFilter($genres)
-	{
-		$compiled = '';
+    /**
+     * Compile genres from db into a string acceptable
+     * by javascript responsible for filtering titles.
+     *
+     * @param  string $genres
+     * @return string
+     */
+    public static function genreFilter($genres)
+    {
+        $compiled = '';
 
-		if(strlen($genres) > 3)
-		{			
-			if (strpos($genres, '|'))
-			{
-				$gnr = explode(' | ', $genres);
+        if(strlen($genres) > 3)
+        {
+            if (strpos($genres, '|'))
+            {
+                $gnr = explode(' | ', $genres);
 
-				foreach ($gnr as $k => $v)
-				{
-					$compiled .= '"' . trim($v) . '", ';
-				}
-				
-				return '[' . rtrim($compiled, ', ') . ', "All"' . ']';
-			}
-			else
-			{
-				$gnr = explode(',', $genres);
+                foreach ($gnr as $k => $v)
+                {
+                    $compiled .= '"' . trim($v) . '", ';
+                }
 
-				foreach ($gnr as $k => $v)
-				{
-					$compiled .= '"' . trim($v) . '", ';
-				}
+                return '[' . rtrim($compiled, ', ') . ', "All"' . ']';
+            }
+            else
+            {
+                $gnr = explode(',', $genres);
 
-				return '[' . rtrim($compiled, ', ') . ']';
-			}
-		}
-	}
+                foreach ($gnr as $k => $v)
+                {
+                    $compiled .= '"' . trim($v) . '", ';
+                }
 
-	/**
-	 * Extracts only 4 digit year from string.
-	 * 
-	 * @param  string $string
-	 * @return string
-	 */
-	public static function extractYear($string)
-	{
-		preg_match('/\b\d{4}\b/', $string, $matches);
+                return '[' . rtrim($compiled, ', ') . ']';
+            }
+        }
+    }
 
-		return (isset($matches[0]) ? $matches[0] : Carbon::now()->addYear()->year);
-	}
+    /**
+     * Extracts only 4 digit year from string.
+     *
+     * @param  string $string
+     * @return string
+     */
+    public static function extractYear($string)
+    {
+        preg_match('/\b\d{4}\b/', $string, $matches);
 
-	/**
-	 * Generates url to given season.
-	 * 
-	 * @param  model $season 
-	 * @param  string $title 
-	 * @return string
-	 */
-	public static function season($title, $season, $base = false)
-	{
-		$title = preg_replace('~[^\p{L}\p{N} ]++~u', '', $title);
-		$title = str_replace(' ', '-', $title);
+        return (isset($matches[0]) ? $matches[0] : Carbon::now()->addYear()->year);
+    }
 
-		if ( ! $base)
-		{
-			$url = Str::slug(trans('main.series')) . '/' . $season->title_id . "-$title" . "/seasons/{$season->number}";
-		}
+    /**
+     * Generates url to given season.
+     *
+     * @param  model $season
+     * @param  string $title
+     * @return string
+     */
+    public static function season($title, $season, $base = false)
+    {
+        $title = preg_replace('~[^\p{L}\p{N} ]++~u', '', $title);
+        $title = str_replace(' ', '-', $title);
 
-		//if true is passed as 3rd argument we'll generate url to series base seasons page
-		else
-		{
-			$url = 'series/' . $season->title_id . "-$title" . "/seasons";
-		}
+        if ( ! $base)
+        {
+            $url = \Str::slug(trans('main.series')) . '/' . $season->title_id . "-$title" . "/seasons/{$season->number}";
+        }
 
-		return url($url);
-	}
+        //if true is passed as 3rd argument we'll generate url to series base seasons page
+        else
+        {
+            $url = 'series/' . $season->title_id . "-$title" . "/seasons";
+        }
 
-	/**
-	 * Extracts imdb title, actor or char id from url or other strings.
-	 * 
-	 * @param  string $url
-	 * @return string
-	 */
-	public static function extract($url)
-	{
-		preg_match("/.*?([a-z]{2}[0-9]+)\/.*?/", $url, $m);
+        return url($url);
+    }
 
-		return (isset($m[1]) ? $m[1] : '');
-	}
+    /**
+     * Extracts imdb title, actor or char id from url or other strings.
+     *
+     * @param  string $url
+     * @return string
+     */
+    public static function extract($url)
+    {
+        preg_match("/.*?([a-z]{2}[0-9]+)\/.*?/", $url, $m);
 
-	/**
-	 * Extracts resource id from sites absolute or relative url.
-	 * 
-	 * @param  string $string 
-	 * @return string
-	 */
-	public static function extractId($string)
-	{
-		$result = preg_split('/[^a-z0-9]/i', $string);
-	
-		//check if url structure is valid: id-title
-		if ( ! isset($result[0]) || ! preg_match('/[0-9]+/', $result[0]))
-		{
-			App::abort(404, 'Not valid url');
-		}
+        return (isset($m[1]) ? $m[1] : '');
+    }
 
-		return $result[0];
-	}
+    /**
+     * Extracts resource id from sites absolute or relative url.
+     *
+     * @param  string $string
+     * @return string
+     */
+    public static function extractId($string)
+    {
+        $result = preg_split('/[^a-z0-9]/i', $string);
 
-	/**
-	 * Check if user has super access (all privilegies)
-	 * 
-	 * @return boolean
-	 */
-	public static function hasSuperAccess()
-	{
-		$user = Sentry::getUser();
+        //check if url structure is valid: id-title
+        if ( ! isset($result[0]) || ! preg_match('/[0-9]+/', $result[0]))
+        {
+            \App::abort(404, 'Not valid url');
+        }
 
-		if (isset($user) && ! empty($user) && $user->hasAccess('super'))
-		{
-			return true;
-		}
-	}
+        return $result[0];
+    }
 
-	/**
-	 * Gets the currently logged in user
-	 * 
-	 * @return User
-	 */
-	public static function loggedInUser()
-	{
-		$user = Sentry::getUser();
+    /**
+     * Check if user has super access (all privilegies)
+     *
+     * @return boolean
+     */
+    public static function hasSuperAccess()
+    {
+        $user = \Sentry::getUser();
 
-		if ( isset($user) )
-		{
-			return $user;
-		}
-	}
+        if (isset($user) && ! empty($user) && $user->hasAccess('super'))
+        {
+            return true;
+        }
+    }
 
-	
-	/**
-	 * Returns ids of all titles current user has added to watchlist.
-	 * 
-	 * @return array
-	 */
-	public static function getUserLists($name = 'watchlist')
-	{
-		if ($user = self::loggedInUser())
-		{
-			return User::fetchLists($user, $name);
-		}		
-	}
+    /**
+     * Gets the currently logged in user
+     *
+     * @return User
+     */
+    public static function loggedInUser()
+    {
+        $user = \Sentry::getUser();
 
-	/**
-	 * Constructs url to current logged in users profile.
-	 * 
-	 * @return string
-	 */
-	public static function profileUrl($user = null)
-	{
-		$user = $user ?: self::loggedInUser();
+        if ( isset($user) )
+        {
+            return $user;
+        }
+    }
 
-		return self::url($user->username, $user->id, 'users', false);
-	}
 
-	/**
-	 * Shorthens the string to the specified lenght.
-	 * 
-	 * @param  string  $string 
-	 * @param  integer $lenght
-	 * @return string 
-	 */
-	public static function shrtString($string, $lenght=20)
-	{
-		$string = strip_tags($string);
+    /**
+     * Returns ids of all titles current user has added to watchlist.
+     *
+     * @return array
+     */
+    public static function getUserLists($name = 'watchlist')
+    {
+        if ($user = self::loggedInUser())
+        {
+            return \User::fetchLists($user, $name);
+        }
+    }
 
-		if (strlen($string) > $lenght)
-		{
-			$string = substr($string, 0, $lenght) . '...';
-		}
+    /**
+     * Constructs url to current logged in users profile.
+     *
+     * @return string
+     */
+    public static function profileUrl()
+    {
+        $user = self::loggedInUser();
 
-		return preg_replace('/<img.*?\/>/', '', $string);
-	}
+        return self::url($user->username, $user->id, 'users');
+    }
 
-	/**
-	 * Makes a fully qualified urs from provider params.
-	 * 
-	 * @return array
-	 */
-	public static function url($resource, $id, $controller = 'movies', $slug = true)
-	{
-		if ($controller == 'movie')
-		{
-			$controller = 'movies';
-		}
+    /**
+     * Shorthens the string to the specified lenght.
+     *
+     * @param  string  $string
+     * @param  integer $lenght
+     * @return string
+     */
+    public static function shrtString($string, $lenght=20)
+    {
+        $string = strip_tags($string);
 
-		$opt = App::make('Options');
+        if (strlen($string) > $lenght)
+        {
+            $string = substr($string, 0, $lenght) . '...';
+        }
 
-		//get uri separator
-		$s = $opt->getUriSeparator();
+        return preg_replace('/<img.*?\/>/', '', $string);
+    }
 
-		//get uri case
-		$case = $opt->getUriCase();
+    /**
+     * Makes a fully qualified urs from provider params.
+     *
+     * @param  string $title
+     * @return array
+     */
+    public static function url($resource, $id, $controller = 'movies')
+    {
+        if ($controller == 'movie')
+        {
+            $controller = 'movies';
+        }
 
-		//remove all non alpha numeric characters and replace all spaces
-		//and double spaces with uri separator
-		$resource = preg_replace('~[^\p{L}\p{N} ]++~u', '', $resource);
-		$resource = str_replace('  ', $s, trim($resource));
-		$resource = str_replace(' ', $s, trim($resource));
+        $opt = \App::make('Options');
 
-		$controller = $slug ? Str::slug(trans("main.$controller")) : $controller;
+        //get uri separator
+        $s = $opt->getUriSeparator();
 
-		if ($case && $case == 'lowercase')
-		{
-			return url(strtolower( $controller . '/' . $id . $s . $resource));
-		}		
+        //get uri case
+        $case = $opt->getUriCase();
 
-		return url($controller . '/' . $id . $s . Str::slug($resource));
-	}
+        //remove all non alpha numeric characters and replace all spaces
+        //and double spaces with uri separator
+        $resource = preg_replace('~[^\p{L}\p{N} ]++~u', '', $resource);
+        $resource = str_replace('  ', $s, trim($resource));
+        $resource = str_replace(' ', $s, trim($resource));
 
-	/**
-	 * Enlarges imdb image while keeping the aspect and crop.
-	 *
-	 * While the image will be responsive and scale to column lenght, giving
-	 * it bigger size will make it sharper but also make it load slower.
-	 * 
-	 * @param  string $url
-	 * @param  integer $s by how much to multiply image size
-	 * @return string
-	 */
-	public static function size($url, $s = 4)
-	{
-		if ( ! strpos($url, '_V1_')) return $url;
+        $controller = \Str::slug(trans("main.$controller"));
 
-		if ( ! empty($url))
-		{
-			if ($s === 'original')
-			{
-				return preg_replace('/_V1_.+?\.[a-zA-Z]{3}/', '.jpg', $url);
-			}
+        if ($case && $case == 'lowercase')
+        {
+            return url(strtolower( $controller . '/' . $id . $s . $resource));
+        }
 
-			//grab only part of the string that represents img size and crop
-			$numbers = explode('V1', $url);
+        return url($controller . '/' . $id . $s . \Str::slug($resource));
+    }
 
-			if ( ! isset($numbers[1]))
-			{
-				return null;
-			}
+    /**
+     * Enlarges imdb image while keeping the aspect and crop.
+     *
+     * While the image will be responsive and scale to column lenght, giving
+     * it bigger size will make it sharper but also make it load slower.
+     *
+     * @param  string $url
+     * @param  integer $s by how much to multiply image size
+     * @return string
+     */
+    public static function size($url, $s = 4)
+    {
+        if ( ! strpos($url, '_V1_')) return $url;
 
-			//multiply all size and crop numbers by 4
-			$size = preg_replace_callback('/([0-9]+)/', function($m) use ($s)
-			{
-			   return ($m[0] * $s);
+        if ( ! empty($url))
+        {
+            if ($s === 'original')
+            {
+                return preg_replace('/_V1_.+?\.[a-zA-Z]{3}/', '.jpg', $url);
+            }
 
-			}, $numbers[1]);
-			//$size = preg_replace('/\d+/e', "$0 * $s", $numbers[1]);
-			
-			return $numbers[0] . 'V1' . $size;
-		}
-	}
+            //grab only part of the string that represents img size and crop
+            $numbers = explode('V1', $url);
 
-	/**
-	 * Compiles wikipedia url to a given string.
-	 * 
-	 * @param  string $string
-	 * @return string
-	 */
-	public static function wikiUrl($string)
-	{
-		$base = 'http://en.wikipedia.org/wiki/'; //Sandra_Bullock
+            if ( ! isset($numbers[1]))
+            {
+                return null;
+            }
 
-		return $base . str_replace(' ', '_', $string);
-	}
+            //multiply all size and crop numbers by 4
+            $size = preg_replace_callback('/([0-9]+)/', function($m) use ($s)
+                {
+                    return ($m[0] * $s);
+
+                }, $numbers[1]);
+            //$size = preg_replace('/\d+/e', "$0 * $s", $numbers[1]);
+
+            return $numbers[0] . 'V1' . $size;
+        }
+    }
+
+    /**
+     * Compiles wikipedia url to a given string.
+     *
+     * @param  string $string
+     * @return string
+     */
+    public static function wikiUrl($string)
+    {
+        $base = 'http://en.wikipedia.org/wiki/'; //Sandra_Bullock
+
+        return $base . str_replace(' ', '_', $string);
+    }
 }

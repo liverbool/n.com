@@ -1,0 +1,55 @@
+.panel {
+	@include box-shadow(none);
+
+	background: none;
+	border-radius: 0;
+
+	&.panel-default,
+	&.panel-warning {
+		border: none;
+	}
+
+	.panel-heading {
+		padding: 15px 15px 0 15px;
+		border-radius: 0;
+		border-color: transparent;
+		background: none;
+
+		.panel-title {
+			font-size: 24px;
+			color: #333;
+			text-shadow: 1px 1px 0 #ececec;
+
+			i {
+				padding-right: 5px;
+			}
+		}
+	}
+}
+
+.panel-theaters {
+	margin-bottom: 20px !important;
+}
+
+.panel-upcoming {
+	margin-bottom: 20px !important;
+}
+
+.panel-actors {
+	margin-bottom: 20px !important;
+}
+
+.panel-review {
+	margin-bottom: 20px !important;
+}
+
+.panel-news {
+}
+
+.panel-facebook {
+	.panel-body {
+		* {
+			width: 100%;
+		}
+	}
+}

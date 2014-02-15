@@ -6,6 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Helpers' => $baseDir . '/app/lib/Kakkak/Helpers.php',
+    'KK\\Controller\\Home' => $baseDir. '/app/controllers/kakkak/controllers/Home.php',
+    'Lib\\Kakkak\\Utils\\Str' => $baseDir . '/app/lib/Kakkak/Utils/Str.php',
+    'Lib\\Kakkak\\Routing\\UriValidator' => $baseDir . '/app/lib/Kakkak/Routing/UriValidator.php',
+    'Lib\Kakkak\Repository\Title\DbTitle' => $baseDir . '/app/lib/Kakkak/Repository/Title/DbTitle.php',
+    'Lib\Kakkak\Repository\Title\TitleServiceProvider' => $baseDir . '/app/lib/Kakkak/Repository/Title/TitleServiceProvider.php',
+    'Lib\Kakkak\Repository\Title\TitleRepositoryInterface' => $baseDir . '/app/lib/Kakkak/Repository/Title/TitleRepositoryInterface.php',
     'Actor' => $baseDir . '/app/models/Actor.php',
     'ActorController' => $baseDir . '/app/controllers/ActorController.php',
     'AddColumnsToNews' => $baseDir . '/app/database/migrations/2014_01_02_211657_add_columns_to_news.php',
@@ -167,7 +174,7 @@ return array(
     'Frozennode\\Administrator\\Validator' => $vendorDir . '/frozennode/administrator/src/Frozennode/Administrator/Validator.php',
     'GroupController' => $baseDir . '/app/controllers/GroupController.php',
     'Groups' => $baseDir . '/app/models/Group.php',
-    'Helpers' => $baseDir . '/app/lib/Helpers.php',
+    'Lib\\Helpers' => $baseDir . '/app/lib/Helpers.php',
     'HomeController' => $baseDir . '/app/controllers/HomeController.php',
     'Hybrid_Auth' => $vendorDir . '/hybridauth/hybridauth/hybridauth/Hybrid/Auth.php',
     'Hybrid_Endpoint' => $vendorDir . '/hybridauth/hybridauth/hybridauth/Hybrid/Endpoint.php',
@@ -631,8 +638,6 @@ return array(
     'Lib\\Services\\Validation\\SeasonValidator' => $baseDir . '/app/lib/Services/Validation/SeasonValidator.php',
     'Lib\\Services\\Validation\\TitleValidator' => $baseDir . '/app/lib/Services/Validation/TitleValidator.php',
     'Lib\\Services\\Validation\\UserValidator' => $baseDir . '/app/lib/Services/Validation/UserValidator.php',
-    'Lib\\Kakkak\\Utils\\Str' => $baseDir . '/app/lib/Kakkak/Utils/Str.php',
-    'Lib\\Kakkak\\Routing\\UriValidator' => $baseDir . '/app/lib/Kakkak/Routing/UriValidator.php',
     'ListsController' => $baseDir . '/app/controllers/ListsController.php',
     'Math_BigInteger' => $vendorDir . '/phpseclib/phpseclib/phpseclib/Math/BigInteger.php',
     'MigrationCartalystSentryInstallGroups' => $vendorDir . '/cartalyst/sentry/src/migrations/2012_12_06_225929_migration_cartalyst_sentry_install_groups.php',

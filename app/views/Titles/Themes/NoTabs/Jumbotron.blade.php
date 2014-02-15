@@ -4,7 +4,7 @@
     <section class="row title-jumbo-row">
       <a href="{{ Helpers::url($data->getTitle(), $data->getId(), $data->getType()) }}" class="col-sm-2 hidden-xs hidden-sm title-poster"><img class="img-responsive" src="{{{ asset($data->getPoster()) }}}" alt="{{{ $data->getTitle() }}}"></a>
       <div class="col-sm-12 col-md-10">
-        <div class="row"><a href="{{ Helpers::url($data->getTitle(), $data->getId(), $data->getType()) }}" class="title-title">{{{ $data->getTitle() }}}</a></div>
+        <div class="row"><h1 class="title-title"><a href="{{ Helpers::url($data->getTitle(), $data->getId(), $data->getType()) }}">{{{ $data->getTitle() }}}</a></h1></div>
         <div class="row title-info">
 
           @if ($data->getRuntime())
@@ -22,11 +22,14 @@
         </div>
 
         <div class="row">
-          <button type="button" class="btn trans-button trailer-trigger" data-trailer="{{{ $data->getTrailer() }}}">
-            <span><i class="fa fa-play"></i> {{ trans('main.play trailer') }}</span>
+          <button type="button" class="btn btn-danger" data-trailer="{{{ $data->getTrailer() }}}">
+            <span><i class="fa fa-toggle-right"></i> {{ trans('main.play movie') }}</span>
           </button>
-          <a type="button" href="{{{ $data->getBuyLink() }}}" class="btn trans-button">
-            <span><i class="fa fa-money"></i> {{ trans('main.buy now') }}</span>
+          <button type="button" class="btn btn-info trailer-trigger" data-trailer="{{{ $data->getTrailer() }}}">
+            <span><i class="fa fa-youtube-play"></i> {{ trans('main.play trailer') }}</span>
+          </button>
+          <a type="button" href="{{{ $data->getBuyLink() }}}" class="btn btn-info">
+            <span><i class="fa fa-credit-card"></i> {{ trans('main.buy now') }}</span>
           </a>
 
           @if ( Helpers::hasAccess('titles.edit') )
@@ -44,14 +47,7 @@
         </div>
 
         <div class="row title-social">
-        
-          @unless( ! isset($disqus))
-            <div><i class="fa fa-comment green-fill"></i> <a class="disqus-link" href="{{ Request::fullUrl() }}#disqus_thread"></a></div>
-          @endunless
-          
-          <div><i class="fa fa-facebook blue-fill fix-circle"></i> <div id="facebook" data-url="{{ Request::fullUrl() }}" data-text='{{ "{$data->getTitle()} - " . trans("main.twitter txt") }}' data-title="Likes"></div></div>
-          <div><i class="fa fa-twitter blue-fill "></i> <div id="twitter" data-url="{{ Request::fullUrl() }}" data-text='{{ "{$data->getTitle()} - " . trans("main.twitter txt") }}' data-title="Tweets"></div></div>
-          <div><i class="fa fa-pinterest orange-fill "></i> <div id="pinterest" data-url="{{ Request::fullUrl() }}" data-text='{{ "{$data->getTitle()} - " . trans("main.twitter txt") }}' data-title="Pin it"></div></div>
+            @include('Main.Socials')
         </div>
 
         <div class="row title-plot">
@@ -59,29 +55,32 @@
         </div>
 
         <div class="row no-mar-right" id="title-votes-row">
-            <div class="col-sm-6 title-seasons">
+            <div class="col-sm-12 title-seasons">
                             
               @if ($data->getType() == 'series')
 
-                {{ trans('main.seasons') }}:           
+                <span>{{ trans('main.seasons') }} :</span>
+
+                <div class="btn-group">
 
                 @foreach ($data->getSeasons() as $v)
 
                   @if ($v->number == Request::segment(4))
 
-                    <a href="{{ Helpers::season($data->getTitle(), $v) }}" class="active">{{{ $v->number }}}</a> |
+                    <a class="btn btn-info btn-sm active" href="{{ Helpers::season($data->getTitle(), $v) }}">{{{ $v->number }}}</a>
 
                   @else
 
-                    <a href="{{ Helpers::season($data->getTitle(), $v) }}">{{{ $v->number }}}</a> |
+                    <a class="btn btn-info btn-sm" href="{{ Helpers::season($data->getTitle(), $v) }}">{{{ $v->number }}}</a>
 
                   @endif
 
                 @endforeach
+                </div>
 
                   @if (Helpers::hasAccess('titles.create'))
 
-                    <a class="title-new-s" href="{{ Helpers::url($data->getTitle(), $data->getId(), 'series') . '/seasons/create'}}">{{ trans('main.new') }}</a>
+                    <a class="btn btn-primary btn-sm title-new-s" href="{{ Helpers::url($data->getTitle(), $data->getId(), 'series') . '/seasons/create'}}"><i class="fa fa-plus"></i> {{ trans('main.new') }}</a>
 
                   @endif
 
@@ -90,7 +89,7 @@
 
             @if ($data->getRating())
 
-              <div class="col-sm-6 title-vote-bar">
+              <div class="col-sm-3 title-vote-bar">
                 <section class="title-vote-text">
                   @if($data->getImdbRating())
                     <div>{{ 'IMDb - ' . "<strong>{$data->getImdbRating()}</strong>" . '/10'}}</div>
@@ -105,7 +104,7 @@
                    @endif                 
                 </section>
 
-              <div class="progress hidden-xs progress-striped">
+              <div class="progress hidden-xs">
                   <div class="progress-bar progress-bar-{{{ $data->getVoteBarColor() }}}" role="votebar" style="width: {{{ $data->getRating() }}}"></div>
                 </div>
               </div>

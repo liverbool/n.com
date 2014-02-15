@@ -1,0 +1,200 @@
+#login-page,
+#register-page,
+#change-pass-page,
+#forgot-pass-page,
+#contact {
+    .push-footer-wrapper {
+        @include align-items(center);
+        @include display-flex();
+        @include justify-content(center);
+    }
+}
+
+#login-page {
+    .container {
+        .col-md-7 {
+            margin: 0;
+            padding: 0;
+            background-color: rgba(0, 0, 0, 0.85);
+
+            form {
+                padding: 30px;
+                background: KK_URL_IMG('bg-icon-member-red.png') no-repeat 300px -15px;
+
+                label {
+                    color: #fff;
+                }
+            }
+        }
+
+        .panel {
+            padding: 0;
+        }
+    }
+}
+
+#register-page {
+    .container {
+        .col-sm-7 {
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+
+            form {
+                padding: 30px;
+
+                label {
+                    //color: #fff;
+                }
+            }
+        }
+
+        .panel {
+            opacity: .95;
+            padding: 0;
+            background-color: #aab2bd;
+        }
+    }
+}
+
+#forgot-pass-page {
+    background: KK_URL_IMG('joker.jpg');
+
+    .container {
+        .panel {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 0;
+            opacity: .9;
+
+            .panel-heading {
+                background-color: rgba(0, 0, 0, 0.75);
+                border-color: rgba(0, 0, 0, 0.8);
+            }
+        }
+    }
+}
+
+#change-pass-page {
+    .panel {
+        background-color: rgba(0, 0, 0, 0.75);
+        color: #FFF;
+        padding: 0;
+
+        .panel-heading {
+            border-color: rgba(0, 0, 0, 0.8);
+            background: none;
+        }
+    }
+}
+
+.login-remember-row {
+    position: relative;
+
+    a, label {
+        font-size: .9em;
+        color: #fff;
+    }
+
+    a {
+        display: block;
+        position: absolute;
+        top: 35px;
+        left: 0;
+    }
+
+    .checkbox {
+        display: inline-block;
+        margin: 0;
+    }
+}
+
+.login-remember {
+    color: #f39c12;
+    font-weight: normal;
+    font-size: .9em;
+    margin-bottom: 0
+}
+
+.social-login-btns {
+    padding: 25px;
+
+    i {
+        font-size: 18px
+    }
+
+    a, a:hover, a:active, a:focus {
+        color: #FFFFFF;
+        margin-bottom: 10px
+    }
+}
+
+.fb-login {
+    border-radius: 0px;
+    background-color: #3B5998;
+    border-color: #384D79
+}
+.fb-login:hover {
+    background-color: #384D79
+}
+.tw-login {
+    border-radius: 0px;
+    background-color: #2CB5DF;
+    padding-right: 21px
+}
+.tw-login:hover {
+    background-color: #2E97B8
+}
+.go-login {
+    border-radius: 0px;
+    background-color: #D9432F;
+    padding-right: 18px
+}
+.go-login:hover {
+    background-color: #E02C14
+}
+
+.login-hello {
+    color: #ecf0f1;
+    padding-right: 10px
+}
+
+.logged-in-box {
+    padding: 6px 0 5px 10px;
+    margin-left: 10px;
+    background: rgba(0, 0, 0, 0.05);
+
+    img {
+        margin-top: 12px;
+        margin-left: 5px
+    }
+
+    .logout {
+        border: 0 transparent;
+
+        i {
+            font-size: 2.5em !important;
+            color: #BDBDBD;
+
+            &:hover {
+                color: $color-a-nav-hover;
+            }
+            &:active {
+                color: $color-a-nav-active;
+            }
+            &:focus {
+                color: $color-a-nav-focus;
+            }
+
+        }
+    }
+}
+
+.logged-box-text {
+    padding-right: 0 !important;
+    text-align: left !important;
+    line-height: 18px !important;
+
+    span {
+        font-weight: bold;
+    }
+}

@@ -257,7 +257,7 @@
 		return false
 	})
 })(jQuery);
-$('.home-social #twitter').sharrre({
+$('.sc-twitter').sharrre({
 	share: {
 		twitter: true
 	},
@@ -269,19 +269,31 @@ $('.home-social #twitter').sharrre({
 		api.openPopup('twitter');
 	}
 });
-$('.home-social #facebook').sharrre({
-	share: {
-		facebook: true
-	},
-	enableHover: false,
-	enableTracking: true,
-	enableCounter: true,
-	click: function(api, options) {
-		api.simulateClick();
-		api.openPopup('facebook');
-	}
+$('.sc-facebook').sharrre({
+    share: {
+        facebook: true
+    },
+    enableHover: false,
+    enableTracking: true,
+    enableCounter: true,
+    click: function(api, options) {
+        api.simulateClick();
+        api.openPopup('facebook');
+    }
 });
-$('.home-social #pinterest').sharrre({
+$('.sc-googleplus').sharrre({
+    share: {
+        googlePlus: true
+    },
+    enableHover: false,
+    enableTracking: true,
+    enableCounter: true,
+    click: function(api, options) {
+        api.simulateClick();
+        api.openPopup('googleplus');
+    }
+});
+/*$('.home-social #pinterest').sharrre({
 	share: {
 		pinterest: true
 	},
@@ -304,7 +316,7 @@ $('.home-social #linkedin').sharrre({
 		api.simulateClick();
 		api.openPopup('linkedin');
 	}
-});
+});*/
 
 (function($) {
 	$('.title-page a[data-toggle="tab"]').on('shown.bs.tab', function() {
@@ -521,4 +533,10 @@ $(window).ready(function() {
             pn[pn.css('display') == 'none' ? 'show' : 'hide']();
         }
     });
+
+    // fix youtube-player css
+    var editedContentPlayer = $('.row-body > p > .youtube-player');
+    if(editedContentPlayer.length) {
+        editedContentPlayer.wrap('<div class="embed-youtube"></div>');
+    }
 });
