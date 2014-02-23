@@ -549,8 +549,8 @@ class Application extends Container implements HttpKernelInterface, TerminableIn
 	{
 		$request = $request ?: $this['request'];
 
-		$response = with($stack = $this->getStackedClient())->handle($request);
 
+        $response = with($stack = $this->getStackedClient())->handle($request);
 		$response->send();
 
 		$stack->terminate($request, $response);

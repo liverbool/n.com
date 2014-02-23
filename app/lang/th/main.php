@@ -84,7 +84,7 @@ return array(
     'western'                          => 'Western',
     'filter'                           => 'Filter',
     'brand'                            => 'nangkakkak.com',
-    'meta title'                       => 'nangkakkak.com - หนังกากกาก',
+    'meta title'                       => 'หนังกากกาก อยากดูหนังดีๆ หนังชัดๆ หนัง HD ไปที่อื่น -nangkakkak.com',
     'meta description'                 => 'nangkakkak, Movies, Series and Celebrities database.',
     'meta keywords'                    => 'movies,tv,series,actors,actresses,directors,stars,writers,trailers',
     'meta title keywords'              => 'reviews, photos, trailers, credits, synopsis, ratings, comments',

@@ -18,10 +18,10 @@
 
     <link rel="shortcut icon" href="{{{ asset('assets/images/kakkak16-2.png') }}}">
 
-    {{ HTML::style('assets/ionicons/css/ionicons.css') }}
     {{ HTML::style('//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css') }}
-    {{ HTML::style('//nangkakkak.github.io/cdn.nangkakkak.com/bootflat/css/bootflat.css') }}
-    {{ HTML::style('//nangkakkak.github.io/cdn.nangkakkak.com/bootflat/css/bootflat-extensions.css') }}
+    {{ HTML::style('assets/ionicons/css/ionicons.css') }}
+    {{ HTML::style('assets/bootflat/css/bootflat.css') }}
+    {{ HTML::style('assets/bootflat/css/bootflat-extensions.css') }}
 
 
     <!--

@@ -1009,14 +1009,16 @@ img.trailer:hover {
     }
 }
 
-
 #privacy {
-    padding-top: 80px
-}
-#privacy p {
-    padding: 10px 0 0 5px;
-    list-style: bullet;
-    list-style-type: circle
+    .container.privacy {
+        padding: 50px;
+    }
+
+    p {
+        padding: 10px 0 0 5px;
+        list-style: bullet;
+        list-style-type: circle
+    }
 }
 
 .overlay {

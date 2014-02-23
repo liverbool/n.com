@@ -6,11 +6,10 @@
 
 @section('content')
 
-    <div class="container push-footer-wrapper">
+    <div class="container privacy push-footer-wrapper">
 
     	{{ trans('privacy.privacy') }}
 
-	<div class="push"></div>
     </div>
 
 @stop
