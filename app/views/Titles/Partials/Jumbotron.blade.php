@@ -108,20 +108,20 @@
 </section>
 <div class="btn-group btns-under-jumbo center-block" style="background-color: {{ $data->getJumboMenuColor() }}">
 
-  <ul>
-    @if(Request::segment(3) == 'seasons' && Request::segment(4))
-      <li class="active"><a href="#episodes" class="btn btn-default no-bord-left" data-toggle="tab">{{ trans('main.eps') }}</a></li>
-      <li><a href="#description" class="btn btn-default no-bord-left" data-toggle="tab"><i class="visible-xs fa fa-tasks"></i><span class="hidden-xs">{{ trans('main.description') }}</span></a></li>
-    @else
-      <li class="active"><a href="#description" class="btn btn-default no-bord-left" data-toggle="tab"><i class="visible-xs fa fa-tasks"></i><span class="hidden-xs">{{ trans('main.description') }}</span></a></li>
-    @endif
-    <li><a id="trigger" href="#cast" class="btn btn-default" data-toggle="tab"><i class="fa visible-xs fa-users"></i><span class="hidden-xs">{{ trans('main.cast') }} &amp; {{ trans('main.crew') }}</span></a></li>
-    <li><a href="#reviews" class="btn btn-default" data-toggle="tab"><i class="fa visible-xs fa-thumbs-up"></i><span class="hidden-xs">{{ trans('main.reviews') }}</span></a></li>
-     @if(Request::segment(3) == 'seasons' && Request::segment(4))
-      <li><a class="btn btn-default" href='{{ url(Str::slug(trans("main.series")) . "/" . $data->getId() . "/seasons/$num/episodes/create") }}'><i class="fa fa-video-camera visible-xs"></i><strong class="hidden-xs">{{ trans('main.create new epi') }}</strong></a></li>
-    @endif
-    <li><a id="trigger2" href="#similar" class="btn btn-default no-bord-right" data-toggle="tab"><i class="fa fa-video-camera visible-xs"></i><span class="hidden-xs">{{ trans('main.moviesseries') }}</span></a></li>
-  </ul>
+    <ul>
+        @if(Request::segment(3) == 'seasons' && Request::segment(4))
+        <li class="active"><a href="#episodes" class="btn btn-default no-bord-left" data-toggle="tab">{{ trans('main.eps') }}</a></li>
+        <li><a href="#description" class="btn btn-default no-bord-left" data-toggle="tab"><i class="visible-xs fa fa-tasks"></i><span class="hidden-xs">{{ trans('main.description') }}</span></a></li>
+        @else
+        <li class="active"><a href="#description" class="btn btn-default no-bord-left" data-toggle="tab"><i class="visible-xs fa fa-tasks"></i><span class="hidden-xs">{{ trans('main.description') }}</span></a></li>
+        @endif
+        <li><a id="trigger" href="#cast" class="btn btn-default" data-toggle="tab"><i class="fa visible-xs fa-users"></i><span class="hidden-xs">{{ trans('main.cast') }} &amp; {{ trans('main.crew') }}</span></a></li>
+        <li><a href="#reviews" class="btn btn-default" data-toggle="tab"><i class="fa visible-xs fa-thumbs-up"></i><span class="hidden-xs">{{ trans('main.reviews') }}</span></a></li>
+        @if(Request::segment(3) == 'seasons' && Request::segment(4) && Helpers::hasAccess('titles:edit'))
+        <li><a class="btn btn-default" href='{{ url(Str::slug(trans("main.series")) . "/" . $data->getId() . "/seasons/$num/episodes/create") }}'><i class="fa fa-video-camera visible-xs"></i><strong class="hidden-xs">{{ trans('main.create new epi') }}</strong></a></li>
+        @endif
+        <li><a id="trigger2" href="#similar" class="btn btn-default no-bord-right" data-toggle="tab"><i class="fa fa-video-camera visible-xs"></i><span class="hidden-xs">{{ trans('main.moviesseries') }}</span></a></li>
+    </ul>
   
   <div class="jumbo-watchlist-btns">
     @include('Titles.Themes.Tabs.TitleListButtons')

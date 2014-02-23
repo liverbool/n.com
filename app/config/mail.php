@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'username' => 'reviewnang@gmail.com',
+	'username' => 'nangkakkak@gmail.com',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -67,7 +67,7 @@ return array(
 	|
 	*/
 
-	'password' => ';b0kiINsoy’',
+	'password' => '0^[dhod^fb',
 
 	/*
 	|--------------------------------------------------------------------------

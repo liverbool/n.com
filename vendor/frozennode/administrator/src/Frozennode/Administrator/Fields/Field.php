@@ -169,7 +169,7 @@ abstract class Field {
 	 */
 	public function fillModel(&$model, $input)
 	{
-		$model->{$this->getOption('field_name')} = is_null($input) ? '' : $input;
+		$model->{$this->getOption('field_name')} = ! $input ? null : $input;
 	}
 
 	/**

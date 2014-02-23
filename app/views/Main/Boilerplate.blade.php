@@ -94,7 +94,8 @@
 </footer>
 {{ HTML::script('assets/js/library.js') }}
 {{ HTML::script('//nangkakkak.github.io/cdn.nangkakkak.com/bootflat/js/jquery.icheck.js') }}
-{{ HTML::script('assets/js/script.min.js') }}
+{{ HTML::script('assets/js/script.js') }}
+{{ HTML::script('assets/js/script-ex.js') }}
 
 @yield('scripts')
 <div id="fb-root"></div>

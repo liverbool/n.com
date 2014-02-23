@@ -51,4 +51,4 @@ Fix bugs Kakkak!
         - 'Lib\Kakkak\Repository\Title\TitleServiceProvider',
 
 ### 7. Modify repository
-    - L: 184 Lib\Repository\Title\DbTitle.php (method titleIndex) set paging = 20
+    - L: 194 Lib\Repository\Title\DbTitle.php (method titleIndex) set paging = 20

@@ -3,8 +3,8 @@
 use Carbon\Carbon;
 use Lib\Services\Db\Writer;
 use Intervention\Image\Image;
-use Char, Actor, Title, Helpers, Event;
 use Lib\Services\Images\ImageSaver as Imgs;
+use Char, Actor, Title, Helpers, Event, App;
 use Lib\Repository\Data\DataRepositoryInterface as Data;
 use Lib\Repository\Review\ReviewRepositoryInterface as RevRepo;
 
@@ -45,6 +45,13 @@ class DbTitle implements TitleRepositoryInterface
      */
     public $provider;
 
+    /**
+     * Options instace.
+     *
+     * @var Lib\Services\Options\Options
+     */
+    private $options;
+
     public function __construct(Title $title, Writer $dbWriter, Imgs $images, RevRepo $review, Data $provider)
     {
         $this->title    = $title;
@@ -52,6 +59,8 @@ class DbTitle implements TitleRepositoryInterface
         $this->images   = $images;
         $this->review   = $review;
         $this->provider = $provider;
+
+        $this->options = App::make('Options');
     }
 
     /**
@@ -91,6 +100,7 @@ class DbTitle implements TitleRepositoryInterface
     {
         foreach ($input as $k => $v)
         {
+            if ($v === '') $v = null;
             $this->title->$k = $v;
         }
 
@@ -268,7 +278,7 @@ class DbTitle implements TitleRepositoryInterface
 
         //next check if it was 5 days  since last update
         //if so we'll update title now
-        if ( ! $title->updated_at || $title->updated_at->addDays(5) <= Carbon::now())
+        if ( ! $title->updated_at || $title->updated_at->addDays(5) <= Carbon::now() && $this->options->autoUpdateData())
         {
             $needs = true;
         }
@@ -408,7 +418,8 @@ class DbTitle implements TitleRepositoryInterface
 
         foreach ($updates as $k => $v)
         {
-            if ($v || $v == '0' || $v === '') $model->$k = $v;
+            if ($v === '') $v = null;
+            $model->$k = $v;
         }
 
         if ($pivot)
